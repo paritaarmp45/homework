@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚙️ ขี้เกียจทำการบ้านโว้ยยย ENGINE v6.0 (EMAIL-SYNC)</title>
-    <!-- Tailwind CSS -->
+    <title>⚙️ ขี้เกียจทำการบ้านโว้ยยย ENGINE v7.0 (GOOGLE AUTH)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,51 +16,43 @@
 
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-stone-200">
         
-        <!-- 🔐 หน้าล็อกอินด้วยอีเมล -->
         <div id="login-screen" class="p-8 text-center bg-stone-50">
             <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center bg-orange-500 rounded-2xl shadow-lg border-2 border-orange-400">
                 <span class="text-6xl text-white">⚙️</span>
-                <span class="text-3xl absolute bottom-2 right-2">📧</span>
+                <span class="text-3xl absolute bottom-2 right-2">🔒</span>
             </div>
             
             <h1 class="text-3xl font-extrabold text-orange-600 tracking-wide mb-1">ขี้เกียจทำการบ้านโว้ยยยย! 🛠️</h1>
-            <p class="text-[11px] text-stone-500 uppercase tracking-widest font-mono mb-6">[ SECURE EMAIL LINK DATABASE // v6.0 ]</p>
-            <p class="text-sm text-stone-600 max-w-sm mx-auto mb-6">"ใช้อีเมลของคุณสร้างกุญแจล็อกคลังข้อมูลส่วนตัว ลิงก์ข้ามเครื่องแท้ 100% มั่นใจข้อมูลไม่หายแน่นอน"</p>
+            <p class="text-[11px] text-stone-500 uppercase tracking-widest font-mono mb-6">[ GOOGLE AUTHENTICATION SYSTEM // v7.0 ]</p>
+            <p class="text-sm text-stone-600 max-w-sm mx-auto mb-8">"ระบบเชื่อมต่อหลังบ้านด้วยบัญชี Google อย่างเป็นทางการ ข้อมูลเซฟลงคลาวด์ถาวร ลิงก์ข้ามคอมและมือถือปลอดภัย 100%"</p>
             
-            <div class="max-w-md mx-auto space-y-3 mb-4">
-                <input type="email" id="email-input" placeholder="ใส่อีเมลของคุณ (เช่น chang@gmail.com)..." 
-                       class="w-full px-4 py-3 bg-white border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 text-center text-base font-semibold placeholder:text-stone-400">
-            </div>
-            
-            <button onclick="loginWithEmail()" id="login-btn"
-                    class="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-3.5 rounded-xl transition duration-200 shadow-md uppercase tracking-wider text-sm">
-                ล็อกอินเข้าคลังข้อมูลอีเมล ⚡
+            <button onclick="loginWithGoogle()" id="login-btn"
+                    class="w-full max-w-md mx-auto flex items-center justify-center gap-3 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-sm text-sm">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5" alt="Google Logo">
+                ลงชื่อเข้าใช้ด้วยบัญชี Google หลังบ้าน ⚡
             </button>
         </div>
 
-        <!-- 📝 หน้าหลัก -->
         <div id="main-screen" class="hidden">
-            <!-- Header -->
             <div class="bg-gradient-to-r from-orange-500 to-amber-500 p-6 text-white flex justify-between items-center font-semibold shadow-md">
                 <div class="flex items-center gap-3">
-                    <span class="text-3xl">⚙️</span>
+                    <img id="user-avatar" src="" class="w-10 h-10 rounded-full border-2 border-white/50 shadow-sm" alt="Avatar">
                     <div>
-                        <p class="text-[10px] text-orange-100 font-mono tracking-wider">SECURE DATABASE KEY:</p>
-                        <h2 class="text-sm font-bold opacity-90" id="user-display">อีเมล: </h2>
+                        <p class="text-[10px] text-orange-100 font-mono tracking-wider">AUTHORIZED USER:</p>
+                        <h2 class="text-sm font-bold opacity-90" id="user-display">กำลังโหลด...</h2>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <span id="sync-status" class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-mono">ONLINE</span>
-                    <button onclick="logout()" class="bg-stone-900/10 hover:bg-stone-900/20 text-xs px-3 py-1.5 rounded-lg border border-white/30 transition">
-                        สลับอีเมล / ออกระบบ 🚪
+                    <button onclick="logoutWithGoogle()" class="bg-stone-900/10 hover:bg-stone-900/20 text-xs px-3 py-1.5 rounded-lg border border-white/30 transition">
+                        ออกจากระบบ 🚪
                     </button>
                 </div>
             </div>
 
-            <!-- ส่วนควบคุมเพิ่มวิชา & เพิ่มงาน -->
             <div class="p-5 border-b border-stone-200 bg-stone-50 space-y-4">
                 <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
-                    <label class="block text-xs font-bold text-stone-600 uppercase tracking-wider mb-1.5">📐 1. เพิ่มรายวิชาใหม่ (จำในอีเมลนี้):</label>
+                    <label class="block text-xs font-bold text-stone-600 uppercase tracking-wider mb-1.5">📐 1. เพิ่มรายวิชาใหม่ (ผูกกับบัญชี Google นี้):</label>
                     <div class="flex gap-2">
                         <input type="text" id="new-subject-input" placeholder="เช่น กลศาสตร์, Drawing, แคลคูลัส..." 
                                class="flex-1 px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
@@ -72,7 +63,7 @@
                 </div>
 
                 <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-sm space-y-3">
-                    <label class="block text-xs font-bold text-orange-600 uppercase tracking-wider border-b border-stone-100 pb-1.5">📦 2. เพิ่มการบ้านใหม่ซิงค์ออนไลน์:</label>
+                    <label class="block text-xs font-bold text-orange-600 uppercase tracking-wider border-b border-stone-100 pb-1.5">📦 2. เพิ่มการบ้านใหม่ซิงค์ออนไลน์ถาวร:</label>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
                             <label class="block text-[11px] text-stone-500 mb-0.5">เลือกโมดูลวิชา</label>
@@ -94,12 +85,11 @@
                         </div>
                     </div>
                     <button onclick="addHomework()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-2.5 rounded-lg text-sm transition shadow-sm">
-                        ส่งงานขึ้นคลาวด์ผูกอีเมล 🚀
+                        ส่งงานขึ้นคลาวด์ Google 🚀
                     </button>
                 </div>
             </div>
 
-            <!-- พื้นที่แสดงกล่องรายวิชา -->
             <div class="p-5 space-y-6">
                 <h2 class="text-base font-extrabold text-stone-700 flex justify-between items-center border-b border-stone-200 pb-2.5">
                     <span class="flex items-center gap-2 text-stone-800">🔥 งานค้างออนไลน์ในระบบของคุณ</span>
@@ -108,7 +98,6 @@
                 <div id="subjects-container" class="space-y-6"></div>
             </div>
 
-            <!-- ประวัติงานที่เสร็จแล้ว -->
             <div class="p-5 bg-stone-100 border-t border-stone-200">
                 <h3 class="text-sm font-bold text-emerald-600 mb-3 flex justify-between items-center">
                     <span class="flex items-center gap-1.5">✅ รอดตายแล้ว (เคลียร์เสร็จสิ้น)</span>
@@ -121,116 +110,136 @@
         </div>
     </div>
 
-    <!-- 🧠 JavaScript ระบบฐานข้อมูลแยกถังอิสระตามคีย์แฮชของอีเมลผู้ใช้ โดยใช้คลังเปิดเสรีสากล -->
-    <script>
-        let currentEmailKey = "";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // คอนฟิกเปิดพอร์ตหลังบ้าน Firebase ของระบบกลางที่มีความเสถียรและทนทานสูง
+        const firebaseConfig = {
+            apiKey: "AIzaSyAs5z_YFp78iR_O7ZkJ7dZ1wHpxXm2nS80",
+            authDomain: "homework-engine-v7.firebaseapp.com",
+            projectId: "homework-engine-v7",
+            storageBucket: "homework-engine-v7.appspot.com",
+            messagingSenderId: "389274920384",
+            appId: "1:389274920384:web:7dfbc47df83ba7d0c3e1a2"
+        };
+
+        // เริ่มระเบิดการเชื่อมต่อระบบหลังบ้าน Google
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        let uid = "";
         let homeworkData = [];
         let subjectsList = [];
 
-        function showStatus(text, isPulse = false) {
+        window.showStatus = function(text, isPulse = false) {
             const el = document.getElementById("sync-status");
-            el.innerText = text;
-            el.className = `text-xs px-2 py-1 rounded font-mono text-white ${isPulse ? 'bg-amber-500 animate-pulse' : 'bg-emerald-600'}`;
+            if(el) {
+                el.innerText = text;
+                el.className = `text-xs px-2 py-1 rounded font-mono text-white ${isPulse ? 'bg-amber-500 animate-pulse' : 'bg-emerald-600'}`;
+            }
         }
 
-        // แปลงอีเมลให้กลายเป็นคีย์เซฟคลาวด์ที่ปลอดภัย (ลบอักขระพิเศษออก)
-        function generateEmailKey(email) {
-            return "user_" + email.toLowerCase().replace(/[^a-z0-9]/g, "_");
-        }
-
-        // ฟังก์ชันดึงข้อมูลจาก Cloud ของอีเมลนั้น ๆ โดยยิงตรงไปที่คลังข้อมูลเปิดสากลไร้ตัวบล็อก
+        // ดึงข้อมูลการบ้านออนไลน์จากระบบกุญแจความปลอดภัย Firestore
         async function loadCloudData() {
-            showStatus("LOADING...", true);
+            window.showStatus("LOADING...", true);
             try {
-                const res = await fetch(`https://api.restful-api.dev/objects`);
-                if (res.ok) {
-                    const dataList = await res.json();
-                    // ค้นหาข้อมูลล่าสุดที่บันทึกไว้ภายใต้คีย์อีเมลนี้
-                    const targetData = dataList.reverse().find(item => item.name === `hw_engine_${currentEmailKey}`);
-                    
-                    if (targetData && targetData.data) {
-                        subjectsList = targetData.data.subjectsList || [];
-                        homeworkData = targetData.data.homeworkData || [];
-                    } else {
-                        subjectsList = [];
-                        homeworkData = [];
-                    }
+                const docRef = doc(db, "users_homework", uid);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    subjectsList = cloudData.subjectsList || [];
+                    homeworkData = cloudData.homeworkData || [];
+                } else {
+                    subjectsList = [];
+                    homeworkData = [];
                 }
             } catch (error) {
-                console.log("เริ่มสร้างฐานข้อมูลใหม่ให้อีเมลนี้");
-                subjectsList = [];
-                homeworkData = [];
+                console.error("Error loading:", error);
             }
-            showStatus("SYNCED");
+            window.showStatus("SYNCED");
             updateSubjectDropdown();
             renderSections();
         }
 
-        // ฟังก์ชันเซฟข้อมูลขึ้น Cloud ผูกล็อกด้วยรหัสอีเมล
-        async function saveCloudData() {
-            showStatus("SAVING...", true);
+        // อัปเดตข้อมูลขึ้นแท่นจัดเก็บหลังบ้าน Google ทันทีที่มีการขยับ
+        window.saveCloudData = async function() {
+            window.showStatus("SAVING...", true);
             try {
-                await fetch(`https://api.restful-api.dev/objects`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        name: `hw_engine_${currentEmailKey}`,
-                        data: { subjectsList, homeworkData }
-                    })
+                await setDoc(doc(db, "users_homework", uid), {
+                    subjectsList: subjectsList,
+                    homeworkData: homeworkData
                 });
             } catch (error) {
-                console.error("เซฟไม่ผ่าน:", error);
+                console.error("Error saving:", error);
             }
-            showStatus("SYNCED");
+            window.showStatus("SYNCED");
         }
 
-        async function loginWithEmail() {
-            const emailInput = document.getElementById("email-input").value.trim();
-            if (!emailInput || !emailInput.includes("@")) { 
-                alert("กรุณากรอกอีเมลให้ถูกต้องด้วยครับพี่ช่าง! (ต้องมี @ ด้วยนะ)"); 
-                return; 
+        // ฟังก์ชันเมื่อกดปุ่มล็อกอินหลังบ้าน เด้งป๊อปอัปของ Google แท้
+        window.loginWithGoogle = async function() {
+            document.getElementById("login-btn").innerText = "กำลังเชื่อมต่อระบบหลังบ้าน Google...";
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                alert("การเข้าสู่ระบบผ่าน Google ถูกยกเลิก หรือติดปัญหาเครือข่ายครับ!");
+                document.getElementById("login-btn").innerHTML = `<img src='https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg' class='w-5 h-5'> ลงชื่อเข้าใช้ด้วยบัญชี Google หลังบ้าน ⚡`;
             }
-            
-            document.getElementById("login-btn").innerText = "กำลังดึงฐานข้อมูลอีเมล...";
-            document.getElementById("login-btn").disabled = true;
-
-            currentEmailKey = generateEmailKey(emailInput);
-            await loadCloudData(); 
-
-            document.getElementById("user-display").innerText = `อีเมล: ${emailInput}`;
-            document.getElementById("login-screen").classList.add("hidden");
-            document.getElementById("main-screen").classList.remove("hidden");
         }
 
-        function logout() {
-            currentEmailKey = "";
-            document.getElementById("email-input").value = "";
-            document.getElementById("login-btn").innerText = "ล็อกอินเข้าคลังข้อมูลอีเมล ⚡";
-            document.getElementById("login-btn").disabled = false;
-            document.getElementById("login-screen").classList.remove("hidden");
-            document.getElementById("main-screen").classList.add("hidden");
+        // ออกจากระบบหลังบ้าน
+        window.logoutWithGoogle = async function() {
+            if(confirm("ต้องการออกจากคลังระบบบัญชี Google นี้ใช่ไหมครับ?")) {
+                await signOut(auth);
+            }
         }
 
-        async function addNewSubject() {
+        // คอยตรวจจับสถานะการล็อกอินหลังบ้านแบบ Real-time
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                uid = user.uid;
+                document.getElementById("user-avatar").src = user.photoURL || "https://www.w3schools.com/howto/img_avatar.png";
+                document.getElementById("user-display").innerText = `${user.displayName} (${user.email})`;
+                
+                document.getElementById("login-screen").classList.add("hidden");
+                document.getElementById("main-screen").classList.remove("hidden");
+                
+                await loadCloudData();
+            } else {
+                uid = "";
+                homeworkData = [];
+                subjectsList = [];
+                document.getElementById("login-screen").classList.remove("hidden");
+                document.getElementById("main-screen").classList.add("hidden");
+                document.getElementById("login-btn").innerHTML = `<img src='https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg' class='w-5 h-5'> ลงชื่อเข้าใช้ด้วยบัญชี Google หลังบ้าน ⚡`;
+            }
+        });
+
+        // ฟังก์ชันระบบย่อยผูกเข้ากับ window สากลเพื่อเรียกใช้งานจากฝั่ง HTML Button
+        window.addNewSubject = async function() {
             const newSubject = document.getElementById("new-subject-input").value.trim();
-            if (!newSubject) { alert("พิมพ์ชื่อวิชาก่อนครับ!"); return; }
-            if (subjectsList.includes(newSubject)) { alert("วิชานี้มีอยู่แล้วในอีเมลนี้!"); return; }
+            if (!newSubject) { alert("พิมพ์ชื่อวิชาก่อนครับพี่ช่าง!"); return; }
+            if (subjectsList.includes(newSubject)) { alert("วิชานี้ถูกเพิ่มในระบบแล้ว!"); return; }
 
             subjectsList.push(newSubject);
             document.getElementById("new-subject-input").value = "";
             
             updateSubjectDropdown();
             renderSections();
-            await saveCloudData(); 
+            await window.saveCloudData(); 
         }
 
-        async function deleteSubject(subjectName) {
-            if(confirm(`🚨 ลบวิชา "${subjectName}"? การบ้านในวิชานี้ของอีเมลนี้จะหายหมดนะ!`)) {
+        window.deleteSubject = async function(subjectName) {
+            if(confirm(`🚨 ลบวิชา "${subjectName}"? การบ้านทังหมดในบัญชีนี้จะหายไปถาวรนะเว้ย!`)) {
                 subjectsList = subjectsList.filter(s => s !== subjectName);
                 homeworkData = homeworkData.filter(item => item.subject !== subjectName);
                 updateSubjectDropdown();
                 renderSections();
-                await saveCloudData();
+                await window.saveCloudData();
             }
         }
 
@@ -251,21 +260,21 @@
             });
         }
 
-        async function addHomework() {
+        window.addHomework = async function() {
             const subject = document.getElementById("subject-select").value;
             const taskText = document.getElementById("task-input").value.trim();
             const noteText = document.getElementById("note-input").value.trim();
             const dueDate = document.getElementById("date-input").value;
 
-            if (subjectsList.length === 0 || subject.startsWith("--")) { alert("โปรดสร้างรายวิชาก่อน!"); return; }
-            if (!taskText) { alert("กรอกรายละเอียดการบ้านด้วยครับ!"); return; }
+            if (subjectsList.length === 0 || subject.startsWith("--")) { alert("โปรดสร้างหมวดวิชาข้อ 1 ก่อนครับ!"); return; }
+            if (!taskText) { alert("กรอกภารกิจการบ้านด้วยครับ!"); return; }
 
             homeworkData.push({
                 id: Date.now(),
                 subject: subject,
                 task: taskText,
-                note: noteText ? noteText : "ไม่มีหมายเหตุ",
-                date: dueDate ? dueDate : "ไม่ลงเดดไลน์",
+                note: noteText ? noteText : "ไม่มีหมายเหตุพิเศษ",
+                date: dueDate ? dueDate : "ไม่ระบุเดดไลน์",
                 done: false
             });
 
@@ -274,49 +283,49 @@
             document.getElementById("date-input").value = "";
 
             renderSections();
-            await saveCloudData();
+            await window.saveCloudData();
         }
 
-        async function editTask(id) {
+        window.editTask = async function(id) {
             const taskIndex = homeworkData.findIndex(item => item.id === id);
             if (taskIndex > -1) {
                 const currentTask = homeworkData[taskIndex];
                 const newTask = prompt("🔧 แก้ไขงาน:", currentTask.task);
                 if (newTask === null) return;
                 const newNote = prompt("🔧 ปรับหมายเหตุ:", currentTask.note);
-                const newDate = prompt("🔧 แก้ไขวันเส้นตาย (ปปปป-ดด-วว):", currentTask.date);
+                const newDate = prompt("🔧 แก้ไขเดดไลน์ (ปปปป-ดด-วว):", currentTask.date);
                 
                 if (newTask.trim() !== "") homeworkData[taskIndex].task = newTask.trim();
                 if (newNote !== null) homeworkData[taskIndex].note = newNote.trim();
                 if (newDate !== null) homeworkData[taskIndex].date = newDate.trim();
                 
                 renderSections();
-                await saveCloudData();
+                await window.saveCloudData();
             }
         }
 
-        async function deleteTask(id) {
-            if (confirm("ลบงานชิ้นนี้?")) {
+        window.deleteTask = async function(id) {
+            if (confirm("ลบงานชิ้นนี้ออกจากระเบียนงานค้าง?")) {
                 homeworkData = homeworkData.filter(item => item.id !== id);
                 renderSections();
-                await saveCloudData();
+                await window.saveCloudData();
             }
         }
 
-        async function completeTask(id) {
+        window.completeTask = async function(id) {
             const taskIndex = homeworkData.findIndex(item => item.id === id);
             if (taskIndex > -1) {
                 homeworkData[taskIndex].done = true;
                 renderSections();
-                await saveCloudData();
+                await window.saveCloudData();
             }
         }
 
-        async function deletePermanent(id) {
-            if(confirm("ลบถาวรใช่ไหม?")) {
+        window.deletePermanent = async function(id) {
+            if(confirm("ลบประวัติงานที่สำเร็จนี้ถาวรใช่ไหม?")) {
                 homeworkData = homeworkData.filter(item => item.id !== id);
                 renderSections();
-                await saveCloudData();
+                await window.saveCloudData();
             }
         }
 
@@ -324,6 +333,8 @@
             const container = document.getElementById("subjects-container");
             const historyContainer = document.getElementById("history-list");
             const historyEmpty = document.getElementById("history-empty");
+            
+            if(!container || !historyContainer) return;
             
             container.innerHTML = "";
             historyContainer.innerHTML = "";
@@ -335,7 +346,7 @@
             document.getElementById("history-count").innerText = `${completedTasks.length} RESOLVED`;
 
             if (subjectsList.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-stone-400 text-sm bg-stone-50 rounded-xl border border-dashed border-stone-300">⚠️ ยังไม่มีรายวิชาในอีเมลนี้ เรียนเชิญตั้งวิชาตรงข้อ 1 ด้านบนได้เลยครับ</div>`;
+                container.innerHTML = `<div class="text-center py-10 text-stone-400 text-sm bg-stone-50 rounded-xl border border-dashed border-stone-300">⚠️ คลังบัญชี Google ของคุณยังว่างเปล่า เริ่มต้นสร้างวิชาที่ช่องเลข 1 ได้เลยครับ</div>`;
             } else {
                 subjectsList.forEach(subjectName => {
                     const pendingInSubject = pendingTasksGlobal.filter(t => t.subject === subjectName);
@@ -359,7 +370,7 @@
                     ul.className = "space-y-2";
 
                     if (pendingInSubject.length === 0) {
-                        ul.innerHTML = `<li class="text-xs text-emerald-600 italic py-2 text-center">🎉 วิชาหนี้คุณเคลียร์หมดแล้ว เยี่ยมมาก!</li>`;
+                        ul.innerHTML = `<li class="text-xs text-emerald-600 italic py-2 text-center">🎉 เคลียร์งานคงค้างในวิชานี้ครบถ้วนแล้วครับ เก่งมากพี่ช่าง!</li>`;
                     } else {
                         pendingInSubject.forEach(item => {
                             const li = document.createElement("li");
