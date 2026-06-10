@@ -86,4 +86,155 @@
                     <span>🔥 งานที่ยังต้องทำ</span>
                     <span id="task-count" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">0 งาน</span>
                 </h3>
-                <div id="empty-state" class="text-center py-6 text-gray-400 text-sm">🎉 ไม่มีงานค้างในวิชานี้เลย สบายมาก
+                <div id="empty-state" class="text-center py-6 text-gray-400 text-sm">🎉 ไม่มีงานค้างในวิชานี้เลย สบายมาก!</div>
+                <ul id="homework-list" class="space-y-2"></ul>
+            </div>
+
+            <div class="p-5 bg-gray-50 border-t border-gray-100">
+                <h3 class="text-sm font-semibold text-emerald-600 mb-3 flex justify-between items-center">
+                    <span>✅ ประวัติการส่งการบ้านแล้ว</span>
+                    <span id="history-count" class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full">0 งาน</span>
+                </h3>
+                <div id="history-empty" class="text-center py-4 text-gray-400 text-xs">ยังไม่มีประวัติการส่งงาน</div>
+                <ul id="history-list" class="space-y-2 opacity-70"></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentUser = "";
+        let currentFilter = "ทั้งหมด";
+        let homeworkData = JSON.parse(localStorage.getItem("homework_db_v2")) || [];
+
+        function login() {
+            const username = document.getElementById("username-input").value.trim();
+            if (!username) { alert("กรุณาใส่ชื่อก่อนจ้า!"); return; }
+            currentUser = username;
+            document.getElementById("user-display").innerText = `คุณ: ${currentUser}`;
+            document.getElementById("login-screen").classList.add("hidden");
+            document.getElementById("main-screen").classList.remove("hidden");
+            renderTasks();
+        }
+
+        function logout() {
+            currentUser = "";
+            document.getElementById("username-input").value = "";
+            document.getElementById("login-screen").classList.remove("hidden");
+            document.getElementById("main-screen").classList.add("hidden");
+        }
+
+        function addHomework() {
+            const subject = document.getElementById("subject-input").value;
+            const taskText = document.getElementById("task-input").value.trim();
+            const dueDate = document.getElementById("date-input").value;
+
+            if (!taskText) { alert("พิมพ์รายละเอียดการบ้านด้วยน้า"); return; }
+
+            homeworkData.push({
+                id: Date.now(),
+                user: currentUser,
+                subject: subject,
+                task: taskText,
+                date: dueDate ? dueDate : "ไม่ระบุวันส่ง",
+                done: false
+            });
+
+            saveData();
+            renderTasks();
+            document.getElementById("task-input").value = "";
+            document.getElementById("date-input").value = "";
+        }
+
+        function completeTask(id) {
+            const taskIndex = homeworkData.findIndex(item => item.id === id);
+            if (taskIndex > -1) {
+                homeworkData[taskIndex].done = true;
+                saveData();
+                renderTasks();
+            }
+        }
+
+        function deletePermanent(id) {
+            if(confirm("ต้องการลบงานนี้ออกจากประวัติถาวรใช่ไหม?")) {
+                homeworkData = homeworkData.filter(item => item.id !== id);
+                saveData();
+                renderTasks();
+            }
+        }
+
+        function filterSubject(subject) {
+            currentFilter = subject;
+            const buttons = document.querySelectorAll("#filter-buttons button");
+            buttons.forEach(btn => {
+                btn.className = "px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300";
+            });
+            window.event.target.className = "px-3 py-1 text-xs rounded-full bg-indigo-600 text-white font-medium";
+            renderTasks();
+        }
+
+        function saveData() {
+            localStorage.setItem("homework_db_v2", JSON.stringify(homeworkData));
+        }
+
+        function renderTasks() {
+            const listContainer = document.getElementById("homework-list");
+            const historyContainer = document.getElementById("history-list");
+            const emptyState = document.getElementById("empty-state");
+            const historyEmpty = document.getElementById("history-empty");
+            
+            listContainer.innerHTML = "";
+            historyContainer.innerHTML = "";
+
+            let userTasks = homeworkData.filter(item => item.user === currentUser);
+
+            if (currentFilter !== "ทั้งหมด") {
+                userTasks = userTasks.filter(item => item.subject === currentFilter);
+            }
+
+            const pendingTasks = userTasks.filter(item => !item.done);
+            const completedTasks = userTasks.filter(item => item.done);
+
+            document.getElementById("task-count").innerText = `${pendingTasks.length} งาน`;
+            document.getElementById("history-count").innerText = `${completedTasks.length} งาน`;
+
+            if (pendingTasks.length === 0) {
+                emptyState.classList.remove("hidden");
+            } else {
+                emptyState.classList.add("hidden");
+                pendingTasks.forEach(item => {
+                    const li = document.createElement("li");
+                    li.className = "flex items-center justify-between bg-white border border-gray-200 p-3 rounded-xl shadow-sm hover:bg-gray-50 transition";
+                    li.innerHTML = `
+                        <div class="min-w-0 flex-1 pr-2">
+                            <span class="inline-block text-[10px] font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-md mb-1 border border-indigo-100">${item.subject}</span>
+                            <p class="text-sm font-medium text-gray-800 break-words">${item.task}</p>
+                            <p class="text-[11px] text-rose-500 font-light mt-0.5">📅 ส่ง: ${item.date}</p>
+                        </div>
+                        <button onclick="completeTask(${item.id})" class="bg-emerald-50 hover:bg-emerald-500 hover:text-white text-emerald-600 border border-emerald-200 w-8 h-8 rounded-full flex items-center justify-center text-sm transition shrink-0" title="ส่งงาน">✓</button>
+                    `;
+                    listContainer.appendChild(li);
+                });
+            }
+
+            if (completedTasks.length === 0) {
+                historyEmpty.classList.remove("hidden");
+            } else {
+                historyEmpty.classList.add("hidden");
+                completedTasks.forEach(item => {
+                    const li = document.createElement("li");
+                    li.className = "flex items-center justify-between bg-gray-100 border border-gray-200 p-3 rounded-xl";
+                    li.innerHTML = `
+                        <div class="min-w-0 flex-1 pr-2 line-through text-gray-400 text-xs">
+                            <span class="inline-block text-[9px] bg-gray-200 text-gray-500 px-1.5 py-0.2 rounded mb-1">[${item.subject}]</span>
+                            <p class="font-light break-words">${item.task}</p>
+                        </div>
+                        <button onclick="deletePermanent(${item.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1" title="ลบถาวร">🗑️</button>
+                    `;
+                    historyContainer.appendChild(li);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
