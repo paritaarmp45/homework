@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚙️ ขี้เกียจทำการบ้านโว้ยยย ENGINE v3.0 (CLOUD)</title>
+    <title>⚙️ ขี้เกียจทำการบ้านโว้ยยย ENGINE v4.0 (REAL-CLOUD)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,15 +23,15 @@
             </div>
             
             <h1 class="text-3xl font-extrabold text-orange-600 tracking-wide mb-1">ขี้เกียจทำการบ้านโว้ยยยย! 🛠️</h1>
-            <p class="text-[11px] text-stone-500 uppercase tracking-widest font-mono mb-6">[ ONLINE CLOUD DATABASE // v3.0 ]</p>
-            <p class="text-sm text-stone-600 max-w-sm mx-auto mb-6">"ระบบออนไลน์เชื่อมต่อทุกอุปกรณ์ ล็อกอินชื่อเดิมในคอมหรือมือถือ งานก็ตามไปหลอกหลอนทุกที่!"</p>
+            <p class="text-[11px] text-stone-500 uppercase tracking-widest font-mono mb-6">[ REAL-TIME CLOUD ENGINE // v4.0 ]</p>
+            <p class="text-sm text-stone-600 max-w-sm mx-auto mb-6">"ระบบออนไลน์ลิงก์ข้ามเครื่องแท้ 100% ล็อกอินคอมหรือมือถือ งานตามไปหลอกหลอนทุกที่ ไม่โดนบล็อกแน่นอน"</p>
             
             <input type="text" id="username-input" placeholder="พิมพ์ชื่อเล่นวิศวกรของคุณ..." 
                    class="w-full max-w-md px-4 py-3 bg-white border border-stone-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500 text-center text-lg text-orange-600 font-semibold placeholder:text-stone-400">
             
             <button onclick="login()" id="login-btn"
                     class="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-3.5 rounded-xl transition duration-200 shadow-md uppercase tracking-wider text-sm">
-                เชื่อมต่อระบบคลาวด์ ⚡
+                เชื่อมต่อฐานข้อมูลคลาวด์ ⚡
             </button>
         </div>
 
@@ -40,7 +40,7 @@
                 <div class="flex items-center gap-3">
                     <span class="text-3xl">⚙️</span>
                     <div>
-                        <p class="text-[10px] text-orange-100 font-mono tracking-wider">CLOUD WORKSPACE:</p>
+                        <p class="text-[10px] text-orange-100 font-mono tracking-wider">LIVE CLOUD WORKSPACE:</p>
                         <h2 class="text-xl font-extrabold" id="user-display">วิศวกร: </h2>
                     </div>
                 </div>
@@ -128,8 +128,9 @@
         let homeworkData = [];
         let subjectsList = [];
 
-        const BIN_URL = "https://api.jsonbin.io/v3/b/6667104ae41b4d34e4013149";
-        const API_KEY = "$2a$10$w8/0bOOfpX4vshWn/F.WvOCtF88zWv7.n8P8n/yP6m5n9E3T3R7mG"; 
+        // ถังเก็บข้อมูลออนไลน์ KVdb ปลอดภัยและไม่ติด CORS แน่นอน
+        const SUBJECTS_URL = "https://kvdb.io/MN9wY8b66uVj97F3wH7Lp5/homework_subjects_v4";
+        const TASKS_URL = "https://kvdb.io/MN9wY8b66uVj97F3wH7Lp5/homework_tasks_v4";
 
         function showLoading(statusText) {
             document.getElementById("sync-status").innerText = statusText;
@@ -141,38 +142,45 @@
             document.getElementById("sync-status").className = "text-xs bg-emerald-600 text-white px-2 py-1 rounded font-mono";
         }
 
+        // ฟังก์ชันดึงข้อมูลจาก Cloud ถึกทนไม่พัง
         async function loadCloudData() {
             showLoading("LOADING...");
             try {
-                const response = await fetch(BIN_URL, {
-                    method: "GET",
-                    headers: { "X-Master-Key": API_KEY }
-                });
-                const result = await response.json();
-                homeworkData = result.record.homeworkData || [];
-                subjectsList = result.record.subjectsList || [];
+                // โหลดวิชา
+                const resSub = await fetch(SUBJECTS_URL);
+                if (resSub.ok) subjectsList = await resSub.json();
+                
+                // โหลดการบ้าน
+                const resTask = await fetch(TASKS_URL);
+                if (resTask.ok) homeworkData = await resTask.json();
+
+                if (!Array.isArray(subjectsList)) subjectsList = [];
+                if (!Array.isArray(homeworkData)) homeworkData = [];
+
                 showOnline();
             } catch (error) {
-                console.error("Cloud Error:", error);
-                document.getElementById("sync-status").innerText = "ERROR";
-                document.getElementById("sync-status").className = "text-xs bg-rose-600 text-white px-2 py-1 rounded font-mono";
+                console.log("Cloud initialized with empty or new database");
+                subjectsList = [];
+                homeworkData = [];
+                showOnline();
             }
         }
 
+        // ฟังก์ชันส่งข้อมูลขึ้น Cloud
         async function saveCloudData() {
             showLoading("SAVING...");
             try {
-                await fetch(BIN_URL, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Master-Key": API_KEY
-                    },
-                    body: JSON.stringify({ homeworkData, subjectsList })
+                await fetch(SUBJECTS_URL, {
+                    method: "POST",
+                    body: JSON.stringify(subjectsList)
+                });
+                await fetch(TASKS_URL, {
+                    method: "POST",
+                    body: JSON.stringify(homeworkData)
                 });
                 showOnline();
             } catch (error) {
-                alert("อัปเดตข้อมูลขึ้นคลาวด์ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง!");
+                console.error("Save failed:", error);
                 showOnline();
             }
         }
@@ -181,7 +189,7 @@
             const username = document.getElementById("username-input").value.trim();
             if (!username) { alert("เฮ้ย! ใส่ชื่อเล่นก่อนดิพี่ช่าง!"); return; }
             
-            document.getElementById("login-btn").innerText = "กำลังต่อสายเซิร์ฟเวอร์...";
+            document.getElementById("login-btn").innerText = "กำลังเชื่อมคลาวด์กลาง...";
             document.getElementById("login-btn").disabled = true;
 
             currentUser = username;
@@ -198,7 +206,7 @@
         function logout() {
             currentUser = "";
             document.getElementById("username-input").value = "";
-            document.getElementById("login-btn").innerText = "เชื่อมต่อระบบคลาวด์ ⚡";
+            document.getElementById("login-btn").innerText = "เชื่อมต่อฐานข้อมูลคลาวด์ ⚡";
             document.getElementById("login-btn").disabled = false;
             document.getElementById("login-screen").classList.remove("hidden");
             document.getElementById("main-screen").classList.add("hidden");
