@@ -79,4 +79,279 @@
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-0.5">กำหนดส่ง</label>
                             <input type="date" id="date-input" 
-                                   class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-
+                                   class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <button onclick="addHomework()" 
+                            class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 rounded-lg text-sm transition shadow-sm">
+                        เพิ่มการบ้านลงหมวดหมู่ ✨
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-5 space-y-6">
+                <h2 class="text-base font-bold text-gray-800 flex justify-between items-center border-b pb-2">
+                    <span>🔥 รายการแยกตามหมวดหมู่วิชา (งานค้าง)</span>
+                    <span id="total-pending-badge" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">0 งานค้างรวม</span>
+                </h2>
+                
+                <div id="subjects-container" class="space-y-6">
+                    </div>
+            </div>
+
+            <div class="p-5 bg-gray-50 border-t border-gray-100">
+                <h3 class="text-sm font-semibold text-emerald-600 mb-3 flex justify-between items-center">
+                    <span>✅ ประวัติการบ้านที่เสร็จแล้ว</span>
+                    <span id="history-count" class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full">0 งาน</span>
+                </h3>
+                <div id="history-empty" class="text-center py-4 text-gray-400 text-xs">ยังไม่มีประวัติการส่งงาน</div>
+                <ul id="history-list" class="space-y-2 opacity-75"></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentUser = "";
+        
+        // ดึงข้อมูลเก่า (คราวนี้วิชาเริ่มต้นเป็นกล่องเปล่า ไม่มีวิชาเซตไว้ล่วงหน้าเลยตามใจคุณ)
+        let homeworkData = JSON.parse(localStorage.getItem("homework_db_v4")) || [];
+        let subjectsList = JSON.parse(localStorage.getItem("subjects_db_v4")) || [];
+
+        function login() {
+            const username = document.getElementById("username-input").value.trim();
+            if (!username) { alert("กรุณาใส่ชื่อก่อนจ้า!"); return; }
+            currentUser = username;
+            document.getElementById("user-display").innerText = `คุณ: ${currentUser}`;
+            document.getElementById("login-screen").classList.add("hidden");
+            document.getElementById("main-screen").classList.remove("hidden");
+            
+            updateSubjectDropdown();
+            renderSections();
+        }
+
+        function logout() {
+            currentUser = "";
+            document.getElementById("username-input").value = "";
+            document.getElementById("login-screen").classList.remove("hidden");
+            document.getElementById("main-screen").classList.add("hidden");
+        }
+
+        // ฟังก์ชันสร้างรายวิชาใหม่เอง
+        function addNewSubject() {
+            const newSubject = document.getElementById("new-subject-input").value.trim();
+            if (!newSubject) { alert("กรุณาพิมพ์ชื่อรายวิชาที่จะสร้างก่อนครับ!"); return; }
+            
+            if (subjectsList.includes(newSubject)) {
+                alert("มีวิชานี้อยู่ในระบบแล้วครับ!");
+                return;
+            }
+
+            subjectsList.push(newSubject);
+            localStorage.setItem("subjects_db_v4", JSON.stringify(subjectsList));
+            
+            document.getElementById("new-subject-input").value = "";
+            updateSubjectDropdown();
+            renderSections();
+        }
+
+        // ลบหมวดหมู่วิชาทิ้งทั้งหมด
+        function deleteSubject(subjectName) {
+            if(confirm(`คุณต้องการลบวิชา "${subjectName}" และการบ้านทั้งหมดในวิชานี้ใช่ไหม?`)) {
+                subjectsList = subjectsList.filter(s => s !== subjectName);
+                homeworkData = homeworkData.filter(item => !(item.subject === subjectName && item.user === currentUser));
+                localStorage.setItem("subjects_db_v4", JSON.stringify(subjectsList));
+                saveData();
+                updateSubjectDropdown();
+                renderSections();
+            }
+        }
+
+        // อัปเดตเมนูแท็บเลื่อนลงเพื่อเลือกวิชาตอนแอดการบ้าน
+        function updateSubjectDropdown() {
+            const selectEl = document.getElementById("subject-select");
+            selectEl.innerHTML = "";
+            if(subjectsList.length === 0) {
+                const opt = document.createElement("option");
+                opt.innerText = "-- กรุณาสร้างวิชาก่อนด้านบน --";
+                selectEl.appendChild(opt);
+                return;
+            }
+            subjectsList.forEach(sub => {
+                const opt = document.createElement("option");
+                opt.value = sub;
+                opt.innerText = sub;
+                selectEl.appendChild(opt);
+            });
+        }
+
+        // ฟังก์ชันเพิ่มงานใหม่
+        function addHomework() {
+            const subject = document.getElementById("subject-select").value;
+            const taskText = document.getElementById("task-input").value.trim();
+            const noteText = document.getElementById("note-input").value.trim();
+            const dueDate = document.getElementById("date-input").value;
+
+            if (subjectsList.length === 0 || subject.startsWith("--")) { alert("กรุณาสร้างหัวข้อรายวิชาก่อนนะครับ!"); return; }
+            if (!taskText) { alert("กรุณาพิมพ์รายละเอียดการบ้านด้วยน้า"); return; }
+
+            homeworkData.push({
+                id: Date.now(),
+                user: currentUser,
+                subject: subject,
+                task: taskText,
+                note: noteText ? noteText : "ไม่มีหมายเหตุ",
+                date: dueDate ? dueDate : "ไม่ระบุวันส่ง",
+                done: false
+            });
+
+            saveData();
+            renderSections();
+            
+            document.getElementById("task-input").value = "";
+            document.getElementById("note-input").value = "";
+            document.getElementById("date-input").value = "";
+        }
+
+        // ฟังก์ชันแก้ไขการบ้าน
+        function editTask(id) {
+            const taskIndex = homeworkData.findIndex(item => item.id === id);
+            if (taskIndex > -1) {
+                const currentTask = homeworkData[taskIndex];
+                const newTask = prompt("แก้ไขรายละเอียดการบ้าน:", currentTask.task);
+                if (newTask === null) return; // กดรีเซ็ต/ยกเลิก
+                const newNote = prompt("แก้ไขหมายเหตุ:", currentTask.note);
+                const newDate = prompt("แก้ไขวันส่ง (ปปปป-ดด-วว):", currentTask.date);
+                
+                if (newTask.trim() !== "") homeworkData[taskIndex].task = newTask.trim();
+                if (newNote !== null) homeworkData[taskIndex].note = newNote.trim();
+                if (newDate !== null) homeworkData[taskIndex].date = newDate.trim();
+                
+                saveData();
+                renderSections();
+            }
+        }
+
+        // ฟังก์ชันลบการบ้านออกจากหมวดหมู่ (ก่อนส่ง)
+        function deleteTask(id) {
+            if (confirm("คุณต้องการลบการบ้านนี้ใช่ไหม?")) {
+                homeworkData = homeworkData.filter(item => item.id !== id);
+                saveData();
+                renderSections();
+            }
+        }
+
+        function completeTask(id) {
+            const taskIndex = homeworkData.findIndex(item => item.id === id);
+            if (taskIndex > -1) {
+                homeworkData[taskIndex].done = true;
+                saveData();
+                renderSections();
+            }
+        }
+
+        function deletePermanent(id) {
+            if(confirm("ต้องการลบงานนี้ออกจากประวัติถาวรใช่ไหม?")) {
+                homeworkData = homeworkData.filter(item => item.id !== id);
+                saveData();
+                renderSections();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem("homework_db_v4", JSON.stringify(homeworkData));
+        }
+
+        // ระบบจัดกลุ่มสร้างหมวดหมู่หน้าจอหลัก
+        function renderSections() {
+            const container = document.getElementById("subjects-container");
+            const historyContainer = document.getElementById("history-list");
+            const historyEmpty = document.getElementById("history-empty");
+            
+            container.innerHTML = "";
+            historyContainer.innerHTML = "";
+
+            // กรองข้อมูลทั้งหมดที่เป็นของ User คนนี้
+            const userTasks = homeworkData.filter(item => item.user === currentUser);
+            const pendingTasksGlobal = userTasks.filter(item => !item.done);
+            const completedTasks = userTasks.filter(item => item.done);
+
+            document.getElementById("total-pending-badge").innerText = `${pendingTasksGlobal.length} งานค้างรวม`;
+            document.getElementById("history-count").innerText = `${completedTasks.length} งาน`;
+
+            if (subjectsList.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm bg-gray-50 rounded-xl border border-dashed border-gray-300">👋 ยังไม่มีหมวดหมู่วิชา กรุณาตั้งหัวชื่อรายวิชาเพิ่มที่ด้านบนก่อนครับ</div>`;
+            } else {
+                // วนลูปสร้างกล่องหมวดหมู่ตามรายวิชาที่มี
+                subjectsList.forEach(subjectName => {
+                    const subjectBox = document.createElement("div");
+                    subjectBox.className = "bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm space-y-3";
+                    
+                    // ส่วนหัวของกล่องวิชา มีปุ่มลบวิชาด้วย
+                    const headerDiv = document.createElement("div");
+                    headerDiv.className = "flex justify-between items-center border-b pb-2 border-gray-200";
+                    
+                    const pendingInSubject = pendingTasksGlobal.filter(t => t.subject === subjectName);
+                    
+                    headerDiv.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-gray-800">📘 ${subjectName}</h3>
+                            <span class="bg-blue-100 text-blue-800 text-[11px] font-medium px-2 py-0.2 rounded-full">${pendingInSubject.length} งาน</span>
+                        </div>
+                        <button onclick="deleteSubject('${subjectName}')" class="text-gray-400 hover:text-red-500 text-xs transition" title="ลบหมวดวิชานี้">🗑️ ลบหมวดวิชา</button>
+                    `;
+                    subjectBox.appendChild(headerDiv);
+
+                    // ส่วนรายการการบ้านภายในวิชานั้นๆ
+                    const ul = document.createElement("ul");
+                    ul.className = "space-y-2";
+
+                    if (pendingInSubject.length === 0) {
+                        ul.innerHTML = `<li class="text-xs text-gray-400 italic py-2 text-center">🎉 ไม่มีงานค้างในหมวดนี้</li>`;
+                    } else {
+                        pendingInSubject.forEach(item => {
+                            const li = document.createElement("li");
+                            li.className = "flex items-start justify-between bg-white border border-gray-200 p-3 rounded-lg shadow-2xs hover:bg-gray-50 transition";
+                            li.innerHTML = `
+                                <div class="min-w-0 flex-1 pr-2">
+                                    <p class="text-sm font-medium text-gray-800 break-words">${item.task}</p>
+                                    <p class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded mt-1 font-light">📝 หมายเหตุ: ${item.note}</p>
+                                    <p class="text-[11px] text-rose-500 font-medium mt-1">📅 ส่งภายใน: ${item.date}</p>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                                    <button onclick="editTask(${item.id})" class="text-xs text-blue-600 hover:bg-blue-50 px-1.5 py-1 rounded border border-blue-100" title="แก้ไขการบ้าน">✏️ แก้ไข</button>
+                                    <button onclick="deleteTask(${item.id})" class="text-xs text-gray-500 hover:bg-red-50 hover:text-red-600 px-1.5 py-1 rounded border border-gray-100" title="ลบการบ้าน">ลบ</button>
+                                    <button onclick="completeTask(${item.id})" class="bg-emerald-50 hover:bg-emerald-500 hover:text-white text-emerald-600 border border-emerald-200 w-7 h-7 rounded-full flex items-center justify-center text-xs transition" title="ทำเสร็จแล้ว">✓</button>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                    }
+                    subjectBox.appendChild(ul);
+                    container.appendChild(subjectBox);
+                });
+            }
+
+            // 📜 วาดส่วน "ประวัติงานที่เสร็จแล้ว"
+            if (completedTasks.length === 0) {
+                historyEmpty.classList.remove("hidden");
+            } else {
+                historyEmpty.classList.add("hidden");
+                completedTasks.forEach(item => {
+                    const li = document.createElement("li");
+                    li.className = "flex items-center justify-between bg-gray-100 border border-gray-200 p-3 rounded-xl";
+                    li.innerHTML = `
+                        <div class="min-w-0 flex-1 pr-2 line-through text-gray-400 text-xs">
+                            <span class="inline-block text-[9px] bg-gray-200 text-gray-500 px-1.5 py-0.2 rounded mb-1">[${item.subject}]</span>
+                            <p class="font-light break-words">${item.task}</p>
+                        </div>
+                        <button onclick="deletePermanent(${item.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1" title="ลบถาวร">🗑️</button>
+                    `;
+                    historyContainer.appendChild(li);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
