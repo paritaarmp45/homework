@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📱 My Custom Homework Tracker</title>
+    <!-- Tailwind CSS v3 ตัวเสถียร ชัวร์แน่นอน -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -16,6 +18,7 @@
 
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         
+        <!-- 🔐 หน้าล็อกอิน (Login Screen) -->
         <div id="login-screen" class="p-8 text-center">
             <div class="text-6xl mb-4">🗂️</div>
             <h1 class="text-2xl font-bold text-gray-800 mb-2">ระบบจัดการการบ้านสร้างวิชาเอง</h1>
@@ -30,7 +33,9 @@
             </button>
         </div>
 
+        <!-- 📝 หน้าหลัก (Main Screen) -->
         <div id="main-screen" class="hidden">
+            <!-- Header -->
             <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white flex justify-between items-center">
                 <div>
                     <p class="text-xs opacity-75">ผู้ใช้งานระบบ</p>
@@ -41,8 +46,10 @@
                 </button>
             </div>
 
+            <!-- ⚙️ ส่วนควบคุม: เพิ่มวิชา & เพิ่มงาน -->
             <div class="p-5 border-b border-gray-100 bg-gray-50 space-y-4">
                 
+                <!-- 🧪 บล็อกสร้างหัวชื่อรายวิชา -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                     <label class="block text-xs font-bold text-gray-700 mb-1.5">🏫 1. ตั้งหัวชื่อรายวิชาใหม่:</label>
                     <div class="flex gap-2">
@@ -54,15 +61,19 @@
                     </div>
                 </div>
 
+                <!-- 📝 บล็อกเพิ่มการบ้านลงในวิชา -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
                     <label class="block text-xs font-bold text-gray-700 border-b pb-1">📚 2. มอบหมายการบ้านใหม่:</label>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <!-- เมนูแท็บเลื่อนลงเพื่อเลือกวิชาที่สร้างไว้ -->
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-0.5">เลือกหมวดวิชา</label>
                             <select id="subject-select" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
-                                </select>
+                                <!-- รายชื่อวิชาที่คุณเพิ่มเองจะมาอยู่ตรงนี้ -->
+                            </select>
                         </div>
+                        <!-- รายละเอียดงาน -->
                         <div class="md:col-span-2">
                             <label class="block text-[11px] text-gray-500 mb-0.5">รายละเอียดการบ้าน</label>
                             <input type="text" id="task-input" placeholder="เช่น ทำแบบฝึกหัดข้อ 1-5 หน้า 40..." 
@@ -71,11 +82,13 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <!-- หมายเหตุ -->
                         <div class="md:col-span-2">
                             <label class="block text-[11px] text-gray-500 mb-0.5">หมายเหตุ</label>
                             <input type="text" id="note-input" placeholder="เช่น ส่งก่อนเที่ยง, งานกลุ่มทำคู่กับบี..." 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
+                        <!-- กำหนดส่ง -->
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-0.5">กำหนดส่ง</label>
                             <input type="date" id="date-input" 
@@ -90,16 +103,20 @@
                 </div>
             </div>
 
+            <!-- 📊 พื้นที่แสดงกล่องหมวดหมู่รายวิชาและการบ้าน -->
             <div class="p-5 space-y-6">
                 <h2 class="text-base font-bold text-gray-800 flex justify-between items-center border-b pb-2">
                     <span>🔥 รายการแยกตามหมวดหมู่วิชา (งานค้าง)</span>
                     <span id="total-pending-badge" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">0 งานค้างรวม</span>
                 </h2>
                 
+                <!-- บล็อกที่จะโชว์รายวิชาและการบ้านแยกตามกล่อง -->
                 <div id="subjects-container" class="space-y-6">
-                    </div>
+                    <!-- กล่องวิชาต่าง ๆ จะถูกสร้างขึ้นที่นี่อัตโนมัติ -->
+                </div>
             </div>
 
+            <!-- 📜 ส่วนที่ 2: ประวัติงานที่เสร็จแล้ว (Completed Tasks) -->
             <div class="p-5 bg-gray-50 border-t border-gray-100">
                 <h3 class="text-sm font-semibold text-emerald-600 mb-3 flex justify-between items-center">
                     <span>✅ ประวัติการบ้านที่เสร็จแล้ว</span>
@@ -112,10 +129,10 @@
         </div>
     </div>
 
+    <!-- 🧠 JavaScript ระบบควบคุมหลังบ้าน -->
     <script>
         let currentUser = "";
         
-        // ดึงข้อมูลเก่า (คราวนี้วิชาเริ่มต้นเป็นกล่องเปล่า ไม่มีวิชาเซตไว้ล่วงหน้าเลยตามใจคุณ)
         let homeworkData = JSON.parse(localStorage.getItem("homework_db_v4")) || [];
         let subjectsList = JSON.parse(localStorage.getItem("subjects_db_v4")) || [];
 
@@ -138,7 +155,6 @@
             document.getElementById("main-screen").classList.add("hidden");
         }
 
-        // ฟังก์ชันสร้างรายวิชาใหม่เอง
         function addNewSubject() {
             const newSubject = document.getElementById("new-subject-input").value.trim();
             if (!newSubject) { alert("กรุณาพิมพ์ชื่อรายวิชาที่จะสร้างก่อนครับ!"); return; }
@@ -156,7 +172,6 @@
             renderSections();
         }
 
-        // ลบหมวดหมู่วิชาทิ้งทั้งหมด
         function deleteSubject(subjectName) {
             if(confirm(`คุณต้องการลบวิชา "${subjectName}" และการบ้านทั้งหมดในวิชานี้ใช่ไหม?`)) {
                 subjectsList = subjectsList.filter(s => s !== subjectName);
@@ -168,7 +183,6 @@
             }
         }
 
-        // อัปเดตเมนูแท็บเลื่อนลงเพื่อเลือกวิชาตอนแอดการบ้าน
         function updateSubjectDropdown() {
             const selectEl = document.getElementById("subject-select");
             selectEl.innerHTML = "";
@@ -186,7 +200,6 @@
             });
         }
 
-        // ฟังก์ชันเพิ่มงานใหม่
         function addHomework() {
             const subject = document.getElementById("subject-select").value;
             const taskText = document.getElementById("task-input").value.trim();
@@ -214,13 +227,12 @@
             document.getElementById("date-input").value = "";
         }
 
-        // ฟังก์ชันแก้ไขการบ้าน
         function editTask(id) {
             const taskIndex = homeworkData.findIndex(item => item.id === id);
             if (taskIndex > -1) {
                 const currentTask = homeworkData[taskIndex];
                 const newTask = prompt("แก้ไขรายละเอียดการบ้าน:", currentTask.task);
-                if (newTask === null) return; // กดรีเซ็ต/ยกเลิก
+                if (newTask === null) return;
                 const newNote = prompt("แก้ไขหมายเหตุ:", currentTask.note);
                 const newDate = prompt("แก้ไขวันส่ง (ปปปป-ดด-วว):", currentTask.date);
                 
@@ -233,7 +245,6 @@
             }
         }
 
-        // ฟังก์ชันลบการบ้านออกจากหมวดหมู่ (ก่อนส่ง)
         function deleteTask(id) {
             if (confirm("คุณต้องการลบการบ้านนี้ใช่ไหม?")) {
                 homeworkData = homeworkData.filter(item => item.id !== id);
@@ -263,7 +274,6 @@
             localStorage.setItem("homework_db_v4", JSON.stringify(homeworkData));
         }
 
-        // ระบบจัดกลุ่มสร้างหมวดหมู่หน้าจอหลัก
         function renderSections() {
             const container = document.getElementById("subjects-container");
             const historyContainer = document.getElementById("history-list");
@@ -272,7 +282,6 @@
             container.innerHTML = "";
             historyContainer.innerHTML = "";
 
-            // กรองข้อมูลทั้งหมดที่เป็นของ User คนนี้
             const userTasks = homeworkData.filter(item => item.user === currentUser);
             const pendingTasksGlobal = userTasks.filter(item => !item.done);
             const completedTasks = userTasks.filter(item => item.done);
@@ -283,12 +292,10 @@
             if (subjectsList.length === 0) {
                 container.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm bg-gray-50 rounded-xl border border-dashed border-gray-300">👋 ยังไม่มีหมวดหมู่วิชา กรุณาตั้งหัวชื่อรายวิชาเพิ่มที่ด้านบนก่อนครับ</div>`;
             } else {
-                // วนลูปสร้างกล่องหมวดหมู่ตามรายวิชาที่มี
                 subjectsList.forEach(subjectName => {
                     const subjectBox = document.createElement("div");
                     subjectBox.className = "bg-gray-50 border border-gray-200 rounded-xl p-4 shadow-sm space-y-3";
                     
-                    // ส่วนหัวของกล่องวิชา มีปุ่มลบวิชาด้วย
                     const headerDiv = document.createElement("div");
                     headerDiv.className = "flex justify-between items-center border-b pb-2 border-gray-200";
                     
@@ -303,7 +310,6 @@
                     `;
                     subjectBox.appendChild(headerDiv);
 
-                    // ส่วนรายการการบ้านภายในวิชานั้นๆ
                     const ul = document.createElement("ul");
                     ul.className = "space-y-2";
 
@@ -314,15 +320,15 @@
                             const li = document.createElement("li");
                             li.className = "flex items-start justify-between bg-white border border-gray-200 p-3 rounded-lg shadow-2xs hover:bg-gray-50 transition";
                             li.innerHTML = `
-                                <div class="min-w-0 flex-1 pr-2">
+                                <div class="min-w-0 flex-1 pr-3">
                                     <p class="text-sm font-medium text-gray-800 break-words">${item.task}</p>
                                     <p class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded mt-1 font-light">📝 หมายเหตุ: ${item.note}</p>
                                     <p class="text-[11px] text-rose-500 font-medium mt-1">📅 ส่งภายใน: ${item.date}</p>
                                 </div>
                                 <div class="flex items-center gap-1.5 shrink-0 ml-1">
-                                    <button onclick="editTask(${item.id})" class="text-xs text-blue-600 hover:bg-blue-50 px-1.5 py-1 rounded border border-blue-100" title="แก้ไขการบ้าน">✏️ แก้ไข</button>
-                                    <button onclick="deleteTask(${item.id})" class="text-xs text-gray-500 hover:bg-red-50 hover:text-red-600 px-1.5 py-1 rounded border border-gray-100" title="ลบการบ้าน">ลบ</button>
-                                    <button onclick="completeTask(${item.id})" class="bg-emerald-50 hover:bg-emerald-500 hover:text-white text-emerald-600 border border-emerald-200 w-7 h-7 rounded-full flex items-center justify-center text-xs transition" title="ทำเสร็จแล้ว">✓</button>
+                                    <button onclick="editTask(${item.id})" class="text-xs text-blue-600 hover:bg-blue-50 px-1.5 py-1 rounded border border-blue-100">✏️ แก้ไข</button>
+                                    <button onclick="deleteTask(${item.id})" class="text-xs text-gray-500 hover:bg-red-50 hover:text-red-600 px-1.5 py-1 rounded border border-gray-100">ลบ</button>
+                                    <button onclick="completeTask(${item.id})" class="bg-emerald-50 hover:bg-emerald-500 hover:text-white text-emerald-600 border border-emerald-200 w-7 h-7 rounded-full flex items-center justify-center text-xs transition">✓</button>
                                 </div>
                             `;
                             ul.appendChild(li);
@@ -333,7 +339,6 @@
                 });
             }
 
-            // 📜 วาดส่วน "ประวัติงานที่เสร็จแล้ว"
             if (completedTasks.length === 0) {
                 historyEmpty.classList.remove("hidden");
             } else {
@@ -346,7 +351,7 @@
                             <span class="inline-block text-[9px] bg-gray-200 text-gray-500 px-1.5 py-0.2 rounded mb-1">[${item.subject}]</span>
                             <p class="font-light break-words">${item.task}</p>
                         </div>
-                        <button onclick="deletePermanent(${item.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1" title="ลบถาวร">🗑️</button>
+                        <button onclick="deletePermanent(${item.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1">🗑️</button>
                     `;
                     historyContainer.appendChild(li);
                 });
