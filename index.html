@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚙️ ขี้เกียจทำการบ้านโว้ยยย ENGINE v1.0</title>
+    <title>⚙️ ขี้เกียจทำการบ้านโว้ยยย ENGINE v2.0</title>
     <!-- Tailwind CSS v3 ตัวเสถียร -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Google -->
@@ -14,141 +14,142 @@
         body { font-family: 'Kanit', sans-serif; }
     </style>
 </head>
-<body class="p-4 md:p-6 bg-slate-900 min-h-screen text-slate-100">
+<body class="p-4 md:p-6 bg-stone-100 min-h-screen text-stone-800">
 
-    <div class="max-w-3xl mx-auto bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-stone-200">
         
-        <!-- 🔐 หน้าล็อกอิน (Engineering Login Screen) -->
-        <div id="login-screen" class="p-8 text-center bg-radial from-slate-800 to-slate-950">
-            <!-- ⚙️ โลโก้แนววิศวกรรม/เด็กช่าง -->
-            <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center bg-amber-500 rounded-2xl shadow-lg border-2 border-amber-400 rotate-3 hover:rotate-0 transition-transform duration-300">
-                <span class="text-6xl animate-spin" style="animation-duration: 10s;">⚙️</span>
+        <!-- 🔐 หน้าล็อกอิน (Private Login Screen) -->
+        <div id="login-screen" class="p-8 text-center bg-gradient-to-b from-stone-50 to-stone-100">
+            <!-- ⚙️ โลโก้ฟันเฟืองวิศวกรรมสีส้มเกียร์ -->
+            <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center bg-orange-500 rounded-2xl shadow-lg border-2 border-orange-400 rotate-3 hover:rotate-0 transition-transform duration-300">
+                <span class="text-6xl animate-spin text-white" style="animation-duration: 12s;">⚙️</span>
                 <span class="text-3xl absolute bottom-2 right-2">🛠️</span>
             </div>
             
-            <!-- ⚡ ชื่อหัวข้อใหญ่แบบเจ๋งๆ กวนๆ -->
-            <h1 class="text-3xl font-extrabold text-amber-500 tracking-wide mb-1">ขี้เกียจทำการบ้านโว้ยยยย! 🛠️</h1>
-            <p class="text-xs text-amber-500/80 uppercase tracking-widest font-mono mb-6">[ HOMEWORK RESISTANCE SYSTEM // v1.0 ]</p>
-            <p class="text-sm text-slate-400 max-w-sm mx-auto mb-6">"ไม่ได้ชอบเรียนวิศวะ... แค่ชอบสถานะตอนงานเสร็จ" แยกหมวดหมู่ แบกงานค้าง ซ่อมโปรเจกต์ ลุยยย!</p>
+            <!-- ⚡ ชื่อหัวข้อใหญ่ส้มเทาสุดกวน -->
+            <h1 class="text-3xl font-extrabold text-orange-600 tracking-wide mb-1">ขี้เกียจทำการบ้านโว้ยยยย! 🛠️</h1>
+            <p class="text-[11px] text-stone-500 uppercase tracking-widest font-mono mb-6">[ HOMEWORK SEPARATION SYSTEM // v2.0 ]</p>
+            <p class="text-sm text-stone-600 max-w-sm mx-auto mb-6">"ระบบล็อกอินแยกโลก ไม่ต้องส่องงานของคนอื่น คีย์เอง เจ็บเอง นักเลงพอ"</p>
             
-            <input type="text" id="username-input" placeholder="รหัสถอนเนส / ชื่อเล่นวิศวกร..." 
-                   class="w-full max-w-md px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500 text-center text-lg text-amber-400 font-semibold placeholder:text-slate-600">
+            <input type="text" id="username-input" placeholder="พิมพ์ชื่อเล่นวิศวกรของคุณ..." 
+                   class="w-full max-w-md px-4 py-3 bg-white border border-stone-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500 text-center text-lg text-orange-600 font-semibold placeholder:text-stone-400 shadow-inner">
             
             <button onclick="login()" 
-                    class="w-full max-w-md bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3.5 rounded-xl transition duration-200 shadow-md uppercase tracking-wider text-sm">
-                เดินเครื่องเข้าระบบ ⚡
+                    class="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-3.5 rounded-xl transition duration-200 shadow-md uppercase tracking-wider text-sm">
+                เดินเครื่องเข้าระบบส่วนตัว ⚡
             </button>
         </div>
 
         <!-- 📝 หน้าหลัก (Main Screen) -->
         <div id="main-screen" class="hidden">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-amber-500 to-orange-600 p-6 text-slate-950 flex justify-between items-center font-semibold">
+            <!-- Header ธีมส้มสว่างสดใส -->
+            <div class="bg-gradient-to-r from-orange-500 to-amber-500 p-6 text-white flex justify-between items-center font-semibold shadow-md">
                 <div class="flex items-center gap-3">
                     <span class="text-3xl">⚙️</span>
                     <div>
-                        <p class="text-xs text-slate-900/80 font-mono">CHIEF ENGINEER:</p>
+                        <p class="text-[10px] text-orange-100 font-mono tracking-wider">ENGINEER WORKSPACE:</p>
                         <h2 class="text-xl font-extrabold" id="user-display">วิศวกร: </h2>
                     </div>
                 </div>
-                <button onclick="logout()" class="bg-slate-950/20 hover:bg-slate-950/40 text-xs px-3 py-1.5 rounded-lg border border-slate-950/30 transition">
+                <button onclick="logout()" class="bg-stone-900/10 hover:bg-stone-900/20 text-xs px-3 py-1.5 rounded-lg border border-white/30 transition">
                     ชัตดาวน์ระบบ 🚪
                 </button>
             </div>
 
-            <!-- ⚙️ ส่วนควบคุม: เพิ่มวิชา & เพิ่มงาน -->
-            <div class="p-5 border-b border-slate-700 bg-slate-850/50 space-y-4">
+            <!-- ⚙️ ส่วนควบคุมธีมเทา-ส้ม (เพิ่มวิชา & เพิ่มงาน) -->
+            <div class="p-5 border-b border-stone-200 bg-stone-50 space-y-4">
                 
-                <!-- 🧪 บล็อกสร้างหัวชื่อรายวิชา -->
-                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-sm">
-                    <label class="block text-xs font-bold text-amber-500 uppercase tracking-wider mb-1.5">📐 1. ขึ้นโครงสร้างรายวิชาใหม่ (ห้ามพิมพ์ซ้ำนะเว้ย):</label>
+                <!-- 🧪 บล็อกสร้างหัวชื่อรายวิชาส่วนตัว -->
+                <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-xs">
+                    <label class="block text-xs font-bold text-stone-600 uppercase tracking-wider mb-1.5">📐 1. ขึ้นโครงสร้างรายวิชาใหม่ (ใช้ร่วมกันในเครื่องได้):</label>
                     <div class="flex gap-2">
                         <input type="text" id="new-subject-input" placeholder="เช่น กลศาสตร์, Drawing, แคลคูลัสโคตรโหด..." 
-                               class="flex-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder:text-slate-600">
-                        <button onclick="addNewSubject()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs px-5 rounded-lg font-extrabold transition shrink-0">
+                               class="flex-1 px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-stone-400">
+                        <button onclick="addNewSubject()" class="bg-stone-700 hover:bg-stone-800 text-white text-xs px-5 rounded-lg font-extrabold transition shrink-0">
                             สร้างรายวิชา ➕
                         </button>
                     </div>
                 </div>
 
                 <!-- 📝 บล็อกเพิ่มการบ้านลงในวิชา -->
-                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-sm space-y-3">
-                    <label class="block text-xs font-bold text-amber-500 uppercase tracking-wider border-b border-slate-700 pb-1.5">📦 2. โยนดีลการบ้านใหม่เข้าคลัง:</label>
+                <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-xs space-y-3">
+                    <label class="block text-xs font-bold text-orange-600 uppercase tracking-wider border-b border-stone-100 pb-1.5">📦 2. โยนดีลการบ้านใหม่เข้าคลังของคุณ:</label>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <!-- เมนูแท็บเลื่อนลงเพื่อเลือกวิชาที่สร้างไว้ -->
+                        <!-- เมนูแท็บเลื่อนลงเพื่อเลือกวิชา -->
                         <div>
-                            <label class="block text-[11px] text-slate-400 mb-0.5">เลือกโมดูลวิชา</label>
-                            <select id="subject-select" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
-                                <!-- รายชื่อวิชาที่คุณเพิ่มเองจะมาอยู่ตรงนี้ -->
+                            <label class="block text-[11px] text-stone-500 mb-0.5">เลือกโมดูลวิชา</label>
+                            <select id="subject-select" class="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <!-- รายชื่อวิชาจะอยู่ตรงนี้ -->
                             </select>
                         </div>
                         <!-- รายละเอียดงาน -->
                         <div class="md:col-span-2">
-                            <label class="block text-[11px] text-slate-400 mb-0.5">สั่งงานอะไรมาอีก (กรอกแผลตรงนี้)</label>
+                            <label class="block text-[11px] text-stone-500 mb-0.5">สั่งงานอะไรมาอีก (กรอกแผลตรงนี้)</label>
                             <input type="text" id="task-input" placeholder="เช่น ทำแล็บโรงงาน, ปั่นรายงาน 20 หน้า..." 
-                                   class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder:text-slate-600">
+                                   class="w-full px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-stone-400">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <!-- หมายเหตุ -->
                         <div class="md:col-span-2">
-                            <label class="block text-[11px] text-slate-400 mb-0.5">หมายเหตุ / คำเตือนสติ</label>
-                            <input type="text" id="note-input" placeholder="เช่น ห้ามส่งเลทไม่งั้นติด F, งานกลุ่มระวังเพื่อนแบก..." 
-                                   class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder:text-slate-600">
+                            <label class="block text-[11px] text-stone-500 mb-0.5">หมายเหตุ / คำเตือนสติ</label>
+                            <input type="text" id="note-input" placeholder="เช่น ห้ามส่งเลทไม่งั้นติด F, งานกลุ่มทำกับใคร..." 
+                                   class="w-full px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder:text-stone-400">
                         </div>
                         <!-- กำหนดส่ง -->
                         <div>
-                            <label class="block text-[11px] text-slate-400 mb-0.5">เส้นตายดีดไลน์ (Deadline)</label>
+                            <label class="block text-[11px] text-stone-500 mb-0.5">เส้นตายดีดไลน์ (Deadline)</label>
                             <input type="date" id="date-input" 
-                                   class="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                   class="w-full px-3 py-1.5 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
                         </div>
                     </div>
 
                     <button onclick="addHomework()" 
-                            class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-2.5 rounded-lg text-sm transition shadow-md">
-                        จ่ายงานเข้าหมวดหมู่ 🚀
+                            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-2.5 rounded-lg text-sm transition shadow-sm">
+                        จ่ายงานเข้าคลังส่วนตัว 🚀
                     </button>
                 </div>
             </div>
 
             <!-- 📊 พื้นที่แสดงกล่องหมวดหมู่รายวิชาและการบ้าน -->
-            <div class="p-5 space-y-6">
-                <h2 class="text-base font-extrabold text-slate-200 flex justify-between items-center border-b border-slate-700 pb-2.5">
-                    <span class="flex items-center gap-2">🔥 ดองไว้ยังไม่ได้แก้ (การบ้านค้าง)</span>
-                    <span id="total-pending-badge" class="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-0.5 rounded-full font-mono">0 TASKS UNRESOLVED</span>
+            <div class="p-5 space-y-6 bg-stone-50/50">
+                <h2 class="text-base font-extrabold text-stone-700 flex justify-between items-center border-b border-stone-200 pb-2.5">
+                    <span class="flex items-center gap-2 text-stone-800">🔥 งานค้างส่วนตัวของคุณ</span>
+                    <span id="total-pending-badge" class="bg-orange-100 text-orange-700 border border-orange-200 text-xs px-2.5 py-0.5 rounded-full font-mono font-bold">0 MY TASKS</span>
                 </h2>
                 
-                <!-- บล็อกที่จะโชว์รายวิชาและการบ้านแยกตามกล่อง -->
+                <!-- กล่องวิชาแยกตามแผลของใครของมัน -->
                 <div id="subjects-container" class="space-y-6">
-                    <!-- กล่องวิชาต่าง ๆ จะถูกสร้างขึ้นที่นี่อัตโนมัติ -->
+                    <!-- จะโผล่ตรงนี้ -->
                 </div>
             </div>
 
             <!-- 📜 ส่วนที่ 2: ประวัติงานที่เสร็จแล้ว (Completed Tasks) -->
-            <div class="p-5 bg-slate-850 border-t border-slate-700">
-                <h3 class="text-sm font-bold text-emerald-400 mb-3 flex justify-between items-center">
+            <div class="p-5 bg-stone-100 border-t border-stone-200">
+                <h3 class="text-sm font-bold text-emerald-600 mb-3 flex justify-between items-center">
                     <span class="flex items-center gap-1.5">✅ รอดตายแล้ว (เคลียร์เสร็จสิ้น)</span>
-                    <span id="history-count" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-0.5 rounded-full font-mono">0 RESOLVED</span>
+                    <span id="history-count" class="bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs px-2.5 py-0.5 rounded-full font-mono font-bold">0 RESOLVED</span>
                 </h3>
-                <div id="history-empty" class="text-center py-6 text-slate-500 text-xs italic">ยังไม่มีประวัติการส่งงานเลยเจ้าข้าเอ๊ยยย</div>
-                <ul id="history-list" class="space-y-2 opacity-80"></ul>
+                <div id="history-empty" class="text-center py-6 text-stone-400 text-xs italic">ยังไม่มีประวัติการส่งงานเลยเจ้าข้าเอ๊ยยย</div>
+                <ul id="history-list" class="space-y-2 opacity-85"></ul>
             </div>
 
         </div>
     </div>
 
-    <!-- 🧠 JavaScript ระบบควบคุมหลังบ้าน -->
+    <!-- 🧠 JavaScript ระบบควบคุมหลังบ้านแบบแยกบัญชีผู้ใช้ -->
     <script>
         let currentUser = "";
         
+        // ใช้ฐานข้อมูลเดิมเพื่อไม่ให้ของเก่าหายหากเคยบันทึกไว้
         let homeworkData = JSON.parse(localStorage.getItem("homework_eng_v1")) || [];
         let subjectsList = JSON.parse(localStorage.getItem("subjects_eng_v1")) || [];
 
         function login() {
             const username = document.getElementById("username-input").value.trim();
-            if (!username) { alert("เฮ้ย! ใส่ชื่อหรือรหัสก่อนดิพี่ช่าง!"); return; }
+            if (!username) { alert("เฮ้ย! ใส่ชื่อเล่นก่อนดิพี่ช่าง!"); return; }
             currentUser = username;
             document.getElementById("user-display").innerText = `วิศวกร: ${currentUser}`;
             document.getElementById("login-screen").classList.add("hidden");
@@ -185,6 +186,7 @@
         function deleteSubject(subjectName) {
             if(confirm(`🚨 ยืนยันคำสั่ง: จะระเบิดวิชา "${subjectName}" และเคลียร์การบ้านทั้งหมดในกล่องนี้ทิ้งใช่ไหม?`)) {
                 subjectsList = subjectsList.filter(s => s !== subjectName);
+                // ลบเฉพาะงานในวิชานี้ที่เป็นของคนล็อกอินปัจจุบันเท่านั้น คนอื่นไม่เกี่ยว
                 homeworkData = homeworkData.filter(item => !(item.subject === subjectName && item.user === currentUser));
                 localStorage.setItem("subjects_eng_v1", JSON.stringify(subjectsList));
                 saveData();
@@ -221,7 +223,7 @@
 
             homeworkData.push({
                 id: Date.now(),
-                user: currentUser,
+                user: currentUser, // ผูกการบ้านชิ้นนี้ไว้กับคนล็อกอิน
                 subject: subject,
                 task: taskText,
                 note: noteText ? noteText : "ไม่มีหมายเหตุพิเศษ",
@@ -292,31 +294,32 @@
             container.innerHTML = "";
             historyContainer.innerHTML = "";
 
+            // 🔒 จุดสำคัญที่สุด: กรองข้อมูลเฉพาะของคนที่ล็อกอินเข้ามาดูอยู่เท่านั้น!
             const userTasks = homeworkData.filter(item => item.user === currentUser);
             const pendingTasksGlobal = userTasks.filter(item => !item.done);
             const completedTasks = userTasks.filter(item => item.done);
 
-            document.getElementById("total-pending-badge").innerText = `${pendingTasksGlobal.length} TASKS UNRESOLVED`;
+            document.getElementById("total-pending-badge").innerText = `${pendingTasksGlobal.length} MY TASKS`;
             document.getElementById("history-count").innerText = `${completedTasks.length} RESOLVED`;
 
             if (subjectsList.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-slate-500 text-sm bg-slate-850 rounded-xl border border-dashed border-slate-700">⚠️ คลังวิชายังว่างเปล่า! รีบตั้งชื่อวิชาตรงช่องเลข 1 ข้างบนด่วนพี่บ่าว</div>`;
+                container.innerHTML = `<div class="text-center py-10 text-stone-400 text-sm bg-stone-50 rounded-xl border border-dashed border-stone-300">⚠️ คลังวิชายังว่างเปล่า! รีบตั้งชื่อวิชาตรงช่องเลข 1 ข้างบนด่วนพี่บ่าว</div>`;
             } else {
                 subjectsList.forEach(subjectName => {
+                    const pendingInSubject = pendingTasksGlobal.filter(t => t.subject === subjectName);
+                    
                     const subjectBox = document.createElement("div");
-                    subjectBox.className = "bg-slate-850 border border-slate-700 rounded-xl p-4 shadow-md space-y-3";
+                    subjectBox.className = "bg-stone-50 border border-stone-200 rounded-xl p-4 shadow-xs space-y-3";
                     
                     const headerDiv = document.createElement("div");
-                    headerDiv.className = "flex justify-between items-center border-b pb-2 border-slate-700";
-                    
-                    const pendingInSubject = pendingTasksGlobal.filter(t => t.subject === subjectName);
+                    headerDiv.className = "flex justify-between items-center border-b pb-2 border-stone-200";
                     
                     headerDiv.innerHTML = `
                         <div class="flex items-center gap-2">
-                            <h3 class="text-sm font-extrabold text-amber-400">📘 โมดูล: ${subjectName}</h3>
-                            <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] px-2 py-0.2 rounded-full font-mono">${pendingInSubject.length} งานค้าง</span>
+                            <h3 class="text-sm font-extrabold text-stone-700">📘 โมดูล: ${subjectName}</h3>
+                            <span class="bg-orange-50 border border-orange-200 text-orange-600 text-[11px] px-2 py-0.2 rounded-full font-mono font-bold">${pendingInSubject.length} งาน</span>
                         </div>
-                        <button onclick="deleteSubject('${subjectName}')" class="text-slate-500 hover:text-rose-400 text-xs transition font-semibold">💥 ทุบหมวดนี้ทิ้ง</button>
+                        <button onclick="deleteSubject('${subjectName}')" class="text-stone-400 hover:text-rose-600 text-xs transition font-semibold">💥 ทุบหมวดนี้ทิ้ง</button>
                     `;
                     subjectBox.appendChild(headerDiv);
 
@@ -324,21 +327,21 @@
                     ul.className = "space-y-2";
 
                     if (pendingInSubject.length === 0) {
-                        ul.innerHTML = `<li class="text-xs text-emerald-400 italic py-2 text-center">🎉 สภาพ! หมวดนี้เคลียร์ครบหมดแล้ว โคตรดีย์</li>`;
+                        ul.innerHTML = `<li class="text-xs text-emerald-600 italic py-2 text-center">🎉 สภาพ! หมวดนี้คุณเคลียร์ครบหมดแล้ว</li>`;
                     } else {
                         pendingInSubject.forEach(item => {
                             const li = document.createElement("li");
-                            li.className = "flex items-start justify-between bg-slate-800 border border-slate-700 p-3 rounded-lg hover:border-slate-600 transition";
+                            li.className = "flex items-start justify-between bg-white border border-stone-200 p-3 rounded-lg hover:border-orange-300 transition";
                             li.innerHTML = `
                                 <div class="min-w-0 flex-1 pr-3">
-                                    <p class="text-sm font-semibold text-slate-200 break-words">${item.task}</p>
-                                    <p class="text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded mt-1.5 font-light border border-slate-700/50">🛠️ หมายเหตุ: ${item.note}</p>
-                                    <p class="text-[11px] text-rose-400 font-semibold mt-1.5">🚨 เส้นตาย: ${item.date}</p>
+                                    <p class="text-sm font-semibold text-stone-800 break-words">${item.task}</p>
+                                    <p class="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded mt-1.5 font-light">🛠️ หมายเหตุ: ${item.note}</p>
+                                    <p class="text-[11px] text-rose-500 font-semibold mt-1.5">🚨 เส้นตาย: ${item.date}</p>
                                 </div>
                                 <div class="flex items-center gap-1.5 shrink-0 ml-1">
-                                    <button onclick="editTask(${item.id})" class="text-xs text-amber-400 hover:bg-amber-500/10 px-2 py-1 rounded border border-amber-500/20 font-semibold">✏️ โมใหม่</button>
-                                    <button onclick="deleteTask(${item.id})" class="text-xs text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 px-2 py-1 rounded border border-slate-700">ลบ</button>
-                                    <button onclick="completeTask(${item.id})" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs transition shadow-sm">✓</button>
+                                    <button onclick="editTask(${item.id})" class="text-xs text-stone-600 hover:bg-stone-100 px-2 py-1 rounded border border-stone-200 font-semibold">✏️ โมใหม่</button>
+                                    <button onclick="deleteTask(${item.id})" class="text-xs text-stone-400 hover:text-rose-600 px-2 py-1 rounded border border-stone-100">ลบ</button>
+                                    <button onclick="completeTask(${item.id})" class="bg-orange-500 hover:bg-orange-600 text-white font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs transition shadow-xs">✓</button>
                                 </div>
                             `;
                             ul.appendChild(li);
@@ -355,13 +358,13 @@
                 historyEmpty.classList.add("hidden");
                 completedTasks.forEach(item => {
                     const li = document.createElement("li");
-                    li.className = "flex items-center justify-between bg-slate-900 border border-slate-800 p-3 rounded-xl opacity-60";
+                    li.className = "flex items-center justify-between bg-white border border-stone-200 p-3 rounded-xl opacity-60";
                     li.innerHTML = `
-                        <div class="min-w-0 flex-1 pr-2 line-through text-slate-500 text-xs">
-                            <span class="inline-block text-[9px] bg-slate-800 text-slate-400 px-1.5 py-0.2 rounded mb-1 border border-slate-700">[${item.subject}]</span>
+                        <div class="min-w-0 flex-1 pr-2 line-through text-stone-400 text-xs">
+                            <span class="inline-block text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.2 rounded mb-1 border border-stone-200">[${item.subject}]</span>
                             <p class="font-light break-words">${item.task}</p>
                         </div>
-                        <button onclick="deletePermanent(${item.id})" class="text-slate-600 hover:text-rose-400 text-xs p-1">🗑️</button>
+                        <button onclick="deletePermanent(${item.id})" class="text-stone-400 hover:text-rose-500 text-xs p-1">🗑️</button>
                     `;
                     historyContainer.appendChild(li);
                 });
