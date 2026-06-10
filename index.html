@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📱 Ultimate Homework Tracker</title>
+    <title>📱 My Custom Homework Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,24 +14,24 @@
 </head>
 <body class="p-4 md:p-6 bg-gray-100 min-h-screen">
 
-    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         
         <div id="login-screen" class="p-8 text-center">
-            <div class="text-6xl mb-4">🚀</div>
-            <h1 class="text-2xl font-bold text-gray-800 mb-2">ระบบจัดการการบ้านรุ่นโปร</h1>
-            <p class="text-sm text-gray-500 mb-6">คีย์วิชาเองได้ มีหมายเหตุ และระบบบันทึกประวัติ</p>
+            <div class="text-6xl mb-4">🗂️</div>
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">ระบบจัดการการบ้านสร้างวิชาเอง</h1>
+            <p class="text-sm text-gray-500 mb-6">สร้างหัวข้อวิชาเอง แยกหมวดหมู่ชัดเจน แก้ไขและลบงานได้</p>
             
             <input type="text" id="username-input" placeholder="พิมพ์ชื่อเล่นของคุณ..." 
-                   class="w-full px-4 py-3 border border-gray-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center text-lg">
+                   class="w-full px-4 py-3 border border-gray-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg">
             
             <button onclick="login()" 
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-200 shadow-md">
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition duration-200 shadow-md">
                 เข้าสู่ระบบ 🔑
             </button>
         </div>
 
         <div id="main-screen" class="hidden">
-            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white flex justify-between items-center">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white flex justify-between items-center">
                 <div>
                     <p class="text-xs opacity-75">ผู้ใช้งานระบบ</p>
                     <h2 class="text-xl font-bold" id="user-display">คุณ: </h2>
@@ -43,283 +43,40 @@
 
             <div class="p-5 border-b border-gray-100 bg-gray-50 space-y-4">
                 
-                <div class="bg-white p-3 rounded-xl border border-gray-200">
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">🏫 คีย์เพิ่มวิชาใหม่ที่นี่ (พิมพ์แล้วกดเพิ่ม):</label>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">🏫 1. ตั้งหัวชื่อรายวิชาใหม่:</label>
                     <div class="flex gap-2">
-                        <input type="text" id="new-subject-input" placeholder="เช่น ฟิสิกส์, บัญชี, ศิลปะ..." 
-                               class="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <button onclick="addNewSubject()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs px-4 rounded-lg font-medium transition shadow-sm">
-                            เพิ่มวิชา ➕
+                        <input type="text" id="new-subject-input" placeholder="เช่น ฟิสิกส์เพิ่มเติม, บัญชีเบื้องต้น..." 
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="addNewSubject()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-5 rounded-lg font-medium transition">
+                            สร้างหัวข้อวิชา ➕
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-white p-3 rounded-xl border border-gray-200 space-y-3">
-                    <label class="block text-xs font-semibold text-gray-600 border-b pb-1">➕ เพิ่มการบ้านใหม่</label>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                    <label class="block text-xs font-bold text-gray-700 border-b pb-1">📚 2. มอบหมายการบ้านใหม่:</label>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
-                            <label class="block text-[11px] text-gray-500 mb-0.5">เลือกวิชา</label>
-                            <select id="subject-select" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-50">
+                            <label class="block text-[11px] text-gray-500 mb-0.5">เลือกหมวดวิชา</label>
+                            <select id="subject-select" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
                                 </select>
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-[11px] text-gray-500 mb-0.5">รายละเอียดงาน</label>
-                            <input type="text" id="task-input" placeholder="เช่น ทำสรุปบทที่ 1 ส่งทางเมล..." 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <label class="block text-[11px] text-gray-500 mb-0.5">รายละเอียดการบ้าน</label>
+                            <input type="text" id="task-input" placeholder="เช่น ทำแบบฝึกหัดข้อ 1-5 หน้า 40..." 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="md:col-span-2">
-                            <label class="block text-[11px] text-gray-500 mb-0.5">หมายเหตุ (เพิ่มเติม)</label>
-                            <input type="text" id="note-input" placeholder="เช่น งานกลุ่ม 5 คน, คะแนนเก็บ 10 คะแนน..." 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <label class="block text-[11px] text-gray-500 mb-0.5">หมายเหตุ</label>
+                            <input type="text" id="note-input" placeholder="เช่น ส่งก่อนเที่ยง, งานกลุ่มทำคู่กับบี..." 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
                             <label class="block text-[11px] text-gray-500 mb-0.5">กำหนดส่ง</label>
                             <input type="date" id="date-input" 
-                                   class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                    </div>
-
-                    <button onclick="addHomework()" 
-                            class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 rounded-lg text-sm transition shadow mt-1">
-                        บันทึกการบ้านใหม่ ✨
-                    </button>
-                </div>
-            </div>
-
-            <div class="px-5 pt-4">
-                <span class="text-xs font-semibold text-gray-500 block mb-2">📂 เลือกดูตามวิชา:</span>
-                <div class="flex flex-wrap gap-1" id="filter-buttons">
-                    </div>
-            </div>
-
-            <div class="p-5">
-                <h3 class="text-sm font-semibold text-amber-600 mb-3 flex justify-between items-center">
-                    <span>🔥 การบ้านที่ยังคงค้าง</span>
-                    <span id="task-count" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">0 งาน</span>
-                </h3>
-                <div id="empty-state" class="text-center py-6 text-gray-400 text-sm">🎉 ไม่มีงานค้างในวิชานี้เลย สบายมาก!</div>
-                <ul id="homework-list" class="space-y-2.5"></ul>
-            </div>
-
-            <div class="p-5 bg-gray-50 border-t border-gray-100">
-                <h3 class="text-sm font-semibold text-emerald-600 mb-3 flex justify-between items-center">
-                    <span>✅ ประวัติการบ้านที่เสร็จแล้ว</span>
-                    <span id="history-count" class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full">0 งาน</span>
-                </h3>
-                <div id="history-empty" class="text-center py-4 text-gray-400 text-xs">ยังไม่มีประวัติการส่งงาน</div>
-                <ul id="history-list" class="space-y-2 opacity-75"></ul>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        let currentUser = "";
-        let currentFilter = "ทั้งหมด";
-        
-        // โหลดข้อมูลเก่าจากความจำเครื่อง (ถ้ามี)
-        let homeworkData = JSON.parse(localStorage.getItem("homework_db_v3")) || [];
-        let subjectsList = JSON.parse(localStorage.getItem("subjects_db_v3")) || ["ทั่วไป", "คณิตศาสตร์", "วิทยาศาสตร์", "ภาษาอังกฤษ"];
-
-        function login() {
-            const username = document.getElementById("username-input").value.trim();
-            if (!username) { alert("กรุณาใส่ชื่อก่อนจ้า!"); return; }
-            currentUser = username;
-            document.getElementById("user-display").innerText = `คุณ: ${currentUser}`;
-            document.getElementById("login-screen").classList.add("hidden");
-            document.getElementById("main-screen").classList.remove("hidden");
-            
-            updateSubjectDropdown();
-            renderFilterButtons();
-            renderTasks();
-        }
-
-        function logout() {
-            currentUser = "";
-            document.getElementById("username-input").value = "";
-            document.getElementById("login-screen").classList.remove("hidden");
-            document.getElementById("main-screen").classList.add("hidden");
-        }
-
-        // ฟังก์ชันคีย์เพิ่มวิชาเอง
-        function addNewSubject() {
-            const newSubject = document.getElementById("new-subject-input").value.trim();
-            if (!newSubject) { alert("กรุณาพิมพ์ชื่อวิชาก่อนนะ!"); return; }
-            
-            if (subjectsList.includes(newSubject)) {
-                alert("มีวิชานี้อยู่ในระบบแล้วครับ!");
-                return;
-            }
-
-            subjectsList.push(newSubject);
-            localStorage.setItem("subjects_db_v3", JSON.stringify(subjectsList)); // เซฟลงความจำ
-            
-            document.getElementById("new-subject-input").value = ""; // ล้างช่องพิมพ์
-            
-            // อัปเดตหน้าจอทันที
-            updateSubjectDropdown();
-            renderFilterButtons();
-            alert(`เพิ่มวิชา "${newSubject}" เรียบร้อยแล้ว! เมนูเลื่อนลงอัปเดตแล้วครับ`);
-        }
-
-        // อัปเดตเมนูแท็บเลื่อนลง (Dropdown Select)
-        function updateSubjectDropdown() {
-            const selectEl = document.getElementById("subject-select");
-            selectEl.innerHTML = "";
-            subjectsList.forEach(sub => {
-                const opt = document.createElement("option");
-                opt.value = sub;
-                opt.innerText = sub;
-                selectEl.appendChild(opt);
-            });
-        }
-
-        // สร้างปุ่มกรองแยกวิชาด้านบนตามวิชาที่มีจริง
-        function renderFilterButtons() {
-            const btnContainer = document.getElementById("filter-buttons");
-            btnContainer.innerHTML = "";
-            
-            // เพิ่มปุ่ม "ทั้งหมด" ก่อนเพื่อน
-            const btnAll = document.createElement("button");
-            btnAll.innerText = "ทั้งหมด";
-            btnAll.className = currentFilter === "ทั้งหมด" ? "px-3 py-1 text-xs rounded-full bg-indigo-600 text-white font-medium" : "px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300";
-            btnAll.onclick = () => { currentFilter = "ทั้งหมด"; resetFilterStyle(); btnAll.className = "px-3 py-1 text-xs rounded-full bg-indigo-600 text-white font-medium"; renderTasks(); };
-            btnContainer.appendChild(btnAll);
-
-            // วนลูปสร้างปุ่มวิชาอื่น ๆ
-            subjectsList.forEach(sub => {
-                const btn = document.createElement("button");
-                btn.innerText = sub;
-                btn.className = currentFilter === sub ? "px-3 py-1 text-xs rounded-full bg-indigo-600 text-white font-medium" : "px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300";
-                btn.onclick = () => { currentFilter = sub; resetFilterStyle(); btn.className = "px-3 py-1 text-xs rounded-full bg-indigo-600 text-white font-medium"; renderTasks(); };
-                btnContainer.appendChild(btn);
-            });
-        }
-
-        function resetFilterStyle() {
-            const buttons = document.querySelectorAll("#filter-buttons button");
-            buttons.forEach(b => b.className = "px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300");
-        }
-
-        // ฟังก์ชันเพิ่มงานใหม่
-        function addHomework() {
-            const subject = document.getElementById("subject-select").value;
-            const taskText = document.getElementById("task-input").value.trim();
-            const noteText = document.getElementById("note-input").value.trim();
-            const dueDate = document.getElementById("date-input").value;
-
-            if (!taskText) { alert("พิมพ์รายละเอียดการบ้านด้วยน้า"); return; }
-
-            homeworkData.push({
-                id: Date.now(),
-                user: currentUser,
-                subject: subject,
-                task: taskText,
-                note: noteText ? noteText : "ไม่มีหมายเหตุ", // บันทึกหมายเหตุ
-                date: dueDate ? dueDate : "ไม่ระบุวันส่ง",
-                done: false
-            });
-
-            saveData();
-            renderTasks();
-            
-            // ล้างค่าฟอร์ม
-            document.getElementById("task-input").value = "";
-            document.getElementById("note-input").value = "";
-            document.getElementById("date-input").value = "";
-        }
-
-        // ย้ายงานไปเซกชัน "เสร็จแล้ว"
-        function completeTask(id) {
-            const taskIndex = homeworkData.findIndex(item => item.id === id);
-            if (taskIndex > -1) {
-                homeworkData[taskIndex].done = true;
-                saveData();
-                renderTasks();
-            }
-        }
-
-        // ลบข้อมูลถาวรออกจากประวัติ
-        function deletePermanent(id) {
-            if(confirm("ต้องการลบงานนี้ออกจากประวัติถาวรใช่ไหม?")) {
-                homeworkData = homeworkData.filter(item => item.id !== id);
-                saveData();
-                renderTasks();
-            }
-        }
-
-        function saveData() {
-            localStorage.setItem("homework_db_v3", JSON.stringify(homeworkData));
-        }
-
-        // แสดงผลรายการการบ้าน
-        function renderTasks() {
-            const listContainer = document.getElementById("homework-list");
-            const historyContainer = document.getElementById("history-list");
-            const emptyState = document.getElementById("empty-state");
-            const historyEmpty = document.getElementById("history-empty");
-            
-            listContainer.innerHTML = "";
-            historyContainer.innerHTML = "";
-
-            // กรองตามชื่อผู้ใช้
-            let userTasks = homeworkData.filter(item => item.user === currentUser);
-
-            // กรองตามวิชา
-            if (currentFilter !== "ทั้งหมด") {
-                userTasks = userTasks.filter(item => item.subject === currentFilter);
-            }
-
-            const pendingTasks = userTasks.filter(item => !item.done);
-            const completedTasks = userTasks.filter(item => item.done);
-
-            document.getElementById("task-count").innerText = `${pendingTasks.length} งาน`;
-            document.getElementById("history-count").innerText = `${completedTasks.length} งาน`;
-
-            // 🚨 วาดส่วน "ยังคงค้าง"
-            if (pendingTasks.length === 0) {
-                emptyState.classList.remove("hidden");
-            } else {
-                emptyState.classList.add("hidden");
-                pendingTasks.forEach(item => {
-                    const li = document.createElement("li");
-                    li.className = "flex items-start justify-between bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:bg-gray-50 transition";
-                    li.innerHTML = `
-                        <div class="min-w-0 flex-1 pr-3">
-                            <span class="inline-block text-[10px] font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-md mb-1.5 border border-indigo-100">${item.subject}</span>
-                            <p class="text-sm font-semibold text-gray-800 break-words">${item.task}</p>
-                            <p class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md my-1.5 font-light">📝 หมายเหตุ: ${item.note}</p>
-                            <p class="text-[11px] text-rose-500 font-medium">📅 กำหนดส่ง: ${item.date}</p>
-                        </div>
-                        <button onclick="completeTask(${item.id})" class="bg-emerald-50 hover:bg-emerald-500 hover:text-white text-emerald-600 border border-emerald-200 w-8 h-8 rounded-full flex items-center justify-center text-sm transition shrink-0 mt-1" title="ย้ายไปช่องเสร็จแล้ว">✓</button>
-                    `;
-                    listContainer.appendChild(li);
-                });
-            }
-
-            // 📜 วาดส่วน "เสร็จแล้ว"
-            if (completedTasks.length === 0) {
-                historyEmpty.classList.remove("hidden");
-            } else {
-                historyEmpty.classList.add("hidden");
-                completedTasks.forEach(item => {
-                    const li = document.createElement("li");
-                    li.className = "flex items-center justify-between bg-gray-100 border border-gray-200 p-3 rounded-xl";
-                    li.innerHTML = `
-                        <div class="min-w-0 flex-1 pr-2 line-through text-gray-400 text-xs">
-                            <span class="inline-block text-[9px] bg-gray-200 text-gray-500 px-1.5 py-0.2 rounded mb-1">[${item.subject}]</span>
-                            <p class="font-light break-words">${item.task}</p>
-                        </div>
-                        <button onclick="deletePermanent(${item.id})" class="text-gray-400 hover:text-rose-500 text-xs p-1" title="ลบถาวร">🗑️</button>
-                    `;
-                    historyContainer.appendChild(li);
-                });
-            }
-        }
-    </script>
-</body>
-</html>
+                                   class="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-
