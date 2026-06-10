@@ -3,410 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚙️ ขี้เกียจทำการบ้านโว้ยยย ENGINE v8.0 (ULTRA-STABLE)</title>
+    <title>⚙️ ENGINE v9.0 - Firebase Real-Time</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Kanit', sans-serif; }
-    </style>
+    <style> body { font-family: 'Kanit', sans-serif; } </style>
 </head>
 <body class="p-4 md:p-6 bg-stone-100 min-h-screen text-stone-800">
 
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-stone-200">
         
         <div id="login-screen" class="p-8 text-center bg-stone-50">
-            <div class="relative w-28 h-28 mx-auto mb-6 flex items-center justify-center bg-orange-500 rounded-2xl shadow-lg border-2 border-orange-400">
-                <span class="text-6xl text-white">⚙️</span>
-                <span class="text-3xl absolute bottom-2 right-2">🛡️</span>
-            </div>
+            <div class="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-orange-500 rounded-2xl shadow-lg text-5xl text-white">⚙️</div>
+            <h1 class="text-2xl font-extrabold text-orange-600 mb-2">ขี้เกียจทำการบ้านโว้ยยย v9.0 🛠️</h1>
+            <p class="text-sm text-stone-600 mb-8">ระบบล็อกอินเชื่อมตรง Firebase Authentication + Firestore Database จำข้อมูลถาวร</p>
             
-            <h1 class="text-3xl font-extrabold text-orange-600 tracking-wide mb-1">ขี้เกียจทำการบ้านโว้ยยยย! 🛠️</h1>
-            <p class="text-[11px] text-stone-500 uppercase tracking-widest font-mono mb-6">[ HIGH-STABILITY CLOUD STORAGE // v8.0 ]</p>
-            <p class="text-sm text-stone-600 max-w-sm mx-auto mb-6">"ระบบคลาวด์ความเสถียรสูง ลิงก์ข้อมูลคอม-มือถือด้วยอีเมลของคุณโดยตรง ไม่ติดล็อก ไม่เอ๋อเร่อ 100%"</p>
-            
-            <input type="email" id="email-key-input" placeholder="ใส่อีเมลของคุณเพื่อใช้เป็นกุญแจคลาวด์..." 
-                   class="w-full max-w-md px-4 py-3 bg-white border border-stone-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500 text-center text-lg text-stone-700 font-semibold placeholder:text-stone-400">
-            
-            <button onclick="connectCloud()" id="login-btn"
-                    class="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-3.5 rounded-xl transition duration-200 shadow-md uppercase tracking-wider text-sm">
-                เชื่อมต่อคลังข้อมูลคลาวด์ส่วนตัว ⚡
+            <button onclick="loginWithGoogle()" id="login-btn"
+                    class="w-full max-w-md mx-auto flex items-center justify-center gap-3 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 font-bold py-3 px-4 rounded-xl transition shadow-sm text-sm">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5" alt="Google">
+                Sign in with Google หลังบ้านแท้ ⚡
             </button>
         </div>
 
         <div id="main-screen" class="hidden">
-            <div class="bg-gradient-to-r from-orange-500 to-amber-500 p-6 text-white flex justify-between items-center font-semibold shadow-md">
+            <div class="bg-gradient-to-r from-orange-500 to-amber-500 p-5 text-white flex justify-between items-center font-semibold">
                 <div class="flex items-center gap-3">
-                    <span class="text-3xl">⚙️</span>
+                    <img id="user-avatar" src="" class="w-9 h-9 rounded-full border-2 border-white/50" alt="Avatar">
                     <div>
-                        <p class="text-[10px] text-orange-100 font-mono tracking-wider">CLOUD STORAGE KEY:</p>
-                        <h2 class="text-sm font-bold opacity-90" id="user-display">อีเมล: </h2>
+                        <p class="text-[10px] text-orange-100 font-mono">FIRESTORE AUTH:</p>
+                        <h2 class="text-xs font-bold" id="user-display">Loading...</h2>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span id="sync-status" class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-mono">ONLINE</span>
-                    <button onclick="logout()" class="bg-stone-900/10 hover:bg-stone-900/20 text-xs px-3 py-1.5 rounded-lg border border-white/30 transition">
-                        สลับบัญชีคลาวด์ 🚪
-                    </button>
+                    <span id="sync-status" class="text-xs bg-emerald-600 text-white px-2 py-0.5 rounded font-mono">ONLINE</span>
+                    <button onclick="logoutWithGoogle()" class="bg-stone-900/20 text-xs px-2.5 py-1 rounded-lg border border-white/20">ออกระบบ 🚪</button>
                 </div>
             </div>
 
             <div class="p-5 border-b border-stone-200 bg-stone-50 space-y-4">
                 <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
-                    <label class="block text-xs font-bold text-stone-600 uppercase tracking-wider mb-1.5">📐 1. เพิ่มรายวิชาใหม่ (เซฟลงคลาวด์อีเมลนี้):</label>
+                    <label class="block text-xs font-bold text-stone-600 mb-1.5">📐 1. เพิ่มรายวิชา:</label>
                     <div class="flex gap-2">
-                        <input type="text" id="new-subject-input" placeholder="เช่น กลศาสตร์, Drawing, แคลคูลัส..." 
-                               class="flex-1 px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <button onclick="addNewSubject()" class="bg-stone-700 hover:bg-stone-800 text-white text-xs px-5 rounded-lg font-extrabold transition shrink-0">
-                            สร้างรายวิชา ➕
-                        </button>
+                        <input type="text" id="new-subject-input" placeholder="เช่น กลศาสตร์, Drawing..." class="flex-1 px-3 py-1.5 bg-white border border-stone-300 rounded-lg text-sm">
+                        <button onclick="addNewSubject()" class="bg-stone-700 hover:bg-stone-800 text-white text-xs px-4 rounded-lg font-bold">สร้างวิชา ➕</button>
                     </div>
                 </div>
 
                 <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-sm space-y-3">
-                    <label class="block text-xs font-bold text-orange-600 uppercase tracking-wider border-b border-stone-100 pb-1.5">📦 2. เพิ่มการบ้านใหม่เข้าคลังออนไลน์ถาวร:</label>
+                    <label class="block text-xs font-bold text-orange-600 border-b pb-1">📦 2. เพิ่มการบ้านเซฟลง Firestore:</label>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
-                            <label class="block text-[11px] text-stone-500 mb-0.5">เลือกโมดูลวิชา</label>
-                            <select id="subject-select" class="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500"></select>
+                            <label class="block text-[11px] text-stone-500">เลือกวิชา</label>
+                            <select id="subject-select" class="w-full px-3 py-1.5 bg-stone-50 border border-stone-300 rounded-lg text-sm"></select>
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-[11px] text-stone-500 mb-0.5">สั่งงานอะไรมาอีก</label>
-                            <input type="text" id="task-input" placeholder="เช่น ทำแล็บโรงงาน, ปั่นรายงาน..." class="w-full px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <label class="block text-[11px] text-stone-500">รายละเอียดงาน</label>
+                            <input type="text" id="task-input" placeholder="สั่งงานอะไรมา..." class="w-full px-3 py-1.5 bg-white border border-stone-300 rounded-lg text-sm">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="md:col-span-2">
-                            <label class="block text-[11px] text-stone-500 mb-0.5">หมายเหตุ</label>
-                            <input type="text" id="note-input" placeholder="เช่น งานกลุ่ม..." class="w-full px-3 py-2 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <label class="block text-[11px] text-stone-500">หมายเหตุ</label>
+                            <input type="text" id="note-input" placeholder="งานกลุ่ม/เดี่ยว..." class="w-full px-3 py-1.5 bg-white border border-stone-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-stone-500 mb-0.5">💡 เส้นตายดีดไลน์</label>
-                            <input type="date" id="date-input" class="w-full px-3 py-1.5 bg-white border border-stone-300 rounded-lg text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <label class="block text-[11px] text-stone-500">📅 เดดไลน์</label>
+                            <input type="date" id="date-input" class="w-full px-3 py-1 bg-white border border-stone-300 rounded-lg text-sm">
                         </div>
                     </div>
-                    <button onclick="addHomework()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-2.5 rounded-lg text-sm transition shadow-sm">
-                        ส่งงานขึ้นคลาวด์ถาวร 🚀
-                    </button>
+                    <button onclick="addHomework()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-sm transition">ส่งงานขึ้นคลาวด์ Google 🚀</button>
                 </div>
             </div>
 
-            <div class="p-5 space-y-6">
-                <h2 class="text-base font-extrabold text-stone-700 flex justify-between items-center border-b border-stone-200 pb-2.5">
-                    <span class="flex items-center gap-2 text-stone-800">🔥 งานออนไลน์คงค้างทั้งหมดของคุณ</span>
-                    <span id="total-pending-badge" class="bg-orange-100 text-orange-700 border border-orange-200 text-xs px-2.5 py-0.5 rounded-full font-mono font-bold">0 TASKS</span>
+            <div class="p-5 space-y-4">
+                <h2 class="text-sm font-extrabold text-stone-700 flex justify-between items-center">
+                    <span>🔥 งานค้างในบัญชีของคุณ</span>
+                    <span id="total-pending-badge" class="bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded-full font-bold">0 TASKS</span>
                 </h2>
-                <div id="subjects-container" class="space-y-6"></div>
+                <div id="subjects-container" class="space-y-4"></div>
             </div>
 
             <div class="p-5 bg-stone-100 border-t border-stone-200">
-                <h3 class="text-sm font-bold text-emerald-600 mb-3 flex justify-between items-center">
-                    <span class="flex items-center gap-1.5">✅ รอดตายแล้ว (เคลียร์เสร็จสิ้น)</span>
-                    <span id="history-count" class="bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs px-2.5 py-0.5 rounded-full font-mono font-bold">0 RESOLVED</span>
-                </h3>
-                <div id="history-empty" class="text-center py-6 text-stone-400 text-xs italic">ยังไม่มีประวัติการส่งงาน</div>
-                <ul id="history-list" class="space-y-2 opacity-85"></ul>
+                <h3 class="text-xs font-bold text-emerald-600 mb-2" id="history-count">✅ รอดตายแล้ว (0 RESOLVED)</h3>
+                <div id="history-empty" class="text-center py-4 text-stone-400 text-xs italic">ยังไม่มีประวัติการส่งงาน</div>
+                <ul id="history-list" class="space-y-1.5"></ul>
             </div>
-
         </div>
     </div>
 
-    <script>
-        let cloudUserKey = "";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ⚠️ [สำคัญมาก] แก้ไขค่าตรงนี้ให้เป็นของคลาวด์ Firebase พี่เอง (ดูวิธีทำในขั้นตอนที่ 2 ด้านล่าง)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        let uid = "";
         let homeworkData = [];
         let subjectsList = [];
 
-        function showStatus(text, isPulse = false) {
+        window.showStatus = function(text, isPulse = false) {
             const el = document.getElementById("sync-status");
-            if (el) {
-                el.innerText = text;
-                el.className = `text-xs px-2 py-1 rounded font-mono text-white ${isPulse ? 'bg-amber-500 animate-pulse' : 'bg-emerald-600'}`;
-            }
+            if(el) { el.innerText = text; el.className = `text-xs px-2 py-0.5 rounded font-mono text-white ${isPulse ? 'bg-amber-500 animate-pulse' : 'bg-emerald-600'}`; }
         }
 
-        // ใช้ API คลังเก็บข้อมูลกลางอิสระ ไม่จำกัดสิทธิ์ บันทึกแบบเรียลไทม์
         async function loadCloudData() {
-            showStatus("LOADING...", true);
+            window.showStatus("LOADING...", true);
             try {
-                // ค้นหาข้อมูลจากพื้นที่เก็บข้อมูลสดผ่าน API ปลอดภัยความเร็วสูง
-                const res = await fetch(`https://api.jsonbin.co/v3/b/65df8076dc74654018ab3f34/latest`, {
-                    headers: { "X-Master-Key": "$2a$10$wR6fLwIq2K7nS.vXWwzL2.I6yE7QZ6K9z4w.XwGgVvB.HwE2wF8y6" }
-                });
-                const resData = await res.json();
-                
-                // ดึงกล่องข้อมูลที่ตรงกับกุญแจอีเมลของผู้ใช้รายนี้
-                if (resData.record && resData.record[cloudUserKey]) {
-                    const userData = resData.record[cloudUserKey];
-                    subjectsList = userData.subjectsList || [];
-                    homeworkData = userData.homeworkData || [];
-                } else {
-                    subjectsList = [];
-                    homeworkData = [];
+                const docSnap = await getDoc(doc(db, "users_homework", uid));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    subjectsList = data.subjectsList || [];
+                    homeworkData = data.homeworkData || [];
                 }
-            } catch (error) {
-                // หากดึงข้อมูลคลาวด์หลักขัดข้อง ให้ดึงข้อมูลสำรองจากหน่วยความจำเครื่องก่อนทันทีเพื่อความเสถียร
-                const localSub = localStorage.getItem(`sub_${cloudUserKey}`);
-                const localTask = localStorage.getItem(`task_${cloudUserKey}`);
-                subjectsList = localSub ? JSON.parse(localSub) : [];
-                homeworkData = localTask ? JSON.parse(localTask) : [];
-            }
-            showStatus("SYNCED");
+            } catch (e) { console.error(e); }
+            window.showStatus("SYNCED");
             updateSubjectDropdown();
             renderSections();
         }
 
-        async function saveCloudData() {
-            showStatus("SAVING...", true);
-            // บันทึกสำรองในเครื่องทันทีเพื่อความรวดเร็วและไม่รอคอยเน็ตพัง
-            localStorage.setItem(`sub_${cloudUserKey}`, JSON.stringify(subjectsList));
-            localStorage.setItem(`task_${cloudUserKey}`, JSON.stringify(homeworkData));
-
+        window.saveCloudData = async function() {
+            window.showStatus("SAVING...", true);
             try {
-                // อ่านข้อมูลทั้งหมดในถังกลางออกมาก่อน เพื่อนำข้อมูลเราไปอัปเดตร่วมกับคนอื่นโดยไม่ให้ค่าคนอื่นหาย
-                const getRes = await fetch(`https://api.jsonbin.co/v3/b/65df8076dc74654018ab3f34/latest`, {
-                    headers: { "X-Master-Key": "$2a$10$wR6fLwIq2K7nS.vXWwzL2.I6yE7QZ6K9z4w.XwGgVvB.HwE2wF8y6" }
-                });
-                const currentRoot = await getRes.json();
-                let allRecords = currentRoot.record || {};
-                
-                // อัปเดตเฉพาะกล่องของอีเมลเรา
-                allRecords[cloudUserKey] = { subjectsList, homeworkData };
+                await setDoc(doc(db, "users_homework", uid), { subjectsList, homeworkData });
+            } catch (e) { console.error(e); }
+            window.showStatus("SYNCED");
+        }
 
-                // ส่งค่ากลับไปบันทึกบนคลาวด์ถาวร
-                await fetch(`https://api.jsonbin.co/v3/b/65df8076dc74654018ab3f34`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': "$2a$10$wR6fLwIq2K7nS.vXWwzL2.I6yE7QZ6K9z4w.XwGgVvB.HwE2wF8y6"
-                    },
-                    body: JSON.stringify(allRecords)
-                });
-            } catch (error) {
-                console.error("เซฟคลาวด์ขัดข้อง แต่บันทึกในเครื่องปลอดภัยดีครับ");
+        window.loginWithGoogle = async function() {
+            try { await signInWithPopup(auth, provider); } catch (e) { alert("ล็อกอินล้มเหลว ตรวจสอบการตั้งค่าหลังบ้าน!"); }
+        }
+
+        window.logoutWithGoogle = async function() { if(confirm("ออกจากระบบใช่ไหม?")) await signOut(auth); }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                uid = user.uid;
+                document.getElementById("user-avatar").src = user.photoURL || "";
+                document.getElementById("user-display").innerText = `${user.displayName} (${user.email})`;
+                document.getElementById("login-screen").classList.add("hidden");
+                document.getElementById("main-screen").classList.remove("hidden");
+                await loadCloudData();
+            } else {
+                uid = "";
+                document.getElementById("login-screen").classList.remove("hidden");
+                document.getElementById("main-screen").classList.add("hidden");
             }
-            showStatus("SYNCED");
-        }
+        });
 
-        async function connectCloud() {
-            const emailInput = document.getElementById("email-key-input").value.trim().toLowerCase();
-            if (!emailInput || !emailInput.includes("@")) { 
-                alert("กรุณากรอกอีเมลให้ถูกต้องด้วยครับพี่ช่าง เพื่อใช้เป็นกุญแจดึงข้อมูล!"); 
-                return; 
-            }
-            
-            document.getElementById("login-btn").innerText = "กำลังเชื่อมต่อคลังข้อมูลคลาวด์...";
-            document.getElementById("login-btn").disabled = true;
-
-            // แปลงอีเมลเป็นคีย์ที่ระบบจำได้ง่าย
-            cloudUserKey = btoa(emailInput).replace(/[^a-zA-Z0-9]/g, ""); 
-            
-            await loadCloudData(); 
-
-            document.getElementById("user-display").innerText = emailInput;
-            document.getElementById("login-screen").classList.add("hidden");
-            document.getElementById("main-screen").classList.remove("hidden");
-        }
-
-        function logout() {
-            cloudUserKey = "";
-            document.getElementById("email-key-input").value = "";
-            document.getElementById("login-btn").innerText = "เชื่อมต่อคลังข้อมูลคลาวด์ส่วนตัว ⚡";
-            document.getElementById("login-btn").disabled = false;
-            document.getElementById("login-screen").classList.remove("hidden");
-            document.getElementById("main-screen").classList.add("hidden");
-        }
-
-        async function addNewSubject() {
-            const newSubject = document.getElementById("new-subject-input").value.trim();
-            if (!newSubject) { alert("พิมพ์ชื่อวิชาก่อนครับ!"); return; }
-            if (subjectsList.includes(newSubject)) { alert("วิชานี้มีอยู่แล้วในระบบ!"); return; }
-
-            subjectsList.push(newSubject);
+        // ฟังก์ชันการทำงานของแอปพลิเคชัน
+        window.addNewSubject = async function() {
+            const val = document.getElementById("new-subject-input").value.trim();
+            if (!val || subjectsList.includes(val)) return;
+            subjectsList.push(val);
             document.getElementById("new-subject-input").value = "";
-            
-            updateSubjectDropdown();
-            renderSections();
-            await saveCloudData(); 
+            updateSubjectDropdown(); renderSections(); await window.saveCloudData();
         }
 
-        async function deleteSubject(subjectName) {
-            if(confirm(`🚨 ลบวิชา "${subjectName}"? งานทั้งหมดจะหายหมดนะเว้ยพี่ช่าง!`)) {
-                subjectsList = subjectsList.filter(s => s !== subjectName);
-                homeworkData = homeworkData.filter(item => item.subject !== subjectName);
-                updateSubjectDropdown();
-                renderSections();
-                await saveCloudData();
-            }
+        window.deleteSubject = async function(name) {
+            if(!confirm(`ลบวิชา "${name}" งานข้างในจะหายหมด?`)) return;
+            subjectsList = subjectsList.filter(s => s !== name);
+            homeworkData = homeworkData.filter(i => i.subject !== name);
+            updateSubjectDropdown(); renderSections(); await window.saveCloudData();
         }
 
         function updateSubjectDropdown() {
-            const selectEl = document.getElementById("subject-select");
-            selectEl.innerHTML = "";
-            if(subjectsList.length === 0) {
-                const opt = document.createElement("option");
-                opt.innerText = "-- สร้างวิชาด้านบนก่อนดิค้าบ --";
-                selectEl.appendChild(opt);
-                return;
-            }
-            subjectsList.forEach(sub => {
-                const opt = document.createElement("option");
-                opt.value = sub;
-                opt.innerText = sub;
-                selectEl.appendChild(opt);
-            });
+            const el = document.getElementById("subject-select"); el.innerHTML = "";
+            if(subjectsList.length === 0) { el.innerHTML = "<option>-- สร้างวิชาก่อน --</option>"; return; }
+            subjectsList.forEach(s => { const o = document.createElement("option"); o.value = s; o.innerText = s; el.appendChild(o); });
         }
 
-        async function addHomework() {
-            const subject = document.getElementById("subject-select").value;
-            const taskText = document.getElementById("task-input").value.trim();
-            const noteText = document.getElementById("note-input").value.trim();
-            const dueDate = document.getElementById("date-input").value;
-
-            if (subjectsList.length === 0 || subject.startsWith("--")) { alert("โปรดสร้างวิชาก่อนครับ!"); return; }
-            if (!taskText) { alert("กรอกรายละเอียดงานด้วยเซ่!"); return; }
-
+        window.addHomework = async function() {
+            const sub = document.getElementById("subject-select").value;
+            const task = document.getElementById("task-input").value.trim();
+            if (subjectsList.length === 0 || !task) return;
             homeworkData.push({
-                id: Date.now(),
-                subject: subject,
-                task: taskText,
-                note: noteText ? noteText : "ไม่มีหมายเหตุ",
-                date: dueDate ? dueDate : "ไม่ลงเดดไลน์",
-                done: false
+                id: Date.now(), subject: sub, task,
+                note: document.getElementById("note-input").value.trim() || "ไม่มีหมายเหตุ",
+                date: document.getElementById("date-input").value || "ไม่มีเดดไลน์", done: false
             });
-
             document.getElementById("task-input").value = "";
             document.getElementById("note-input").value = "";
-            document.getElementById("date-input").value = "";
-
-            renderSections();
-            await saveCloudData();
+            renderSections(); await window.saveCloudData();
         }
 
-        async function editTask(id) {
-            const taskIndex = homeworkData.findIndex(item => item.id === id);
-            if (taskIndex > -1) {
-                const currentTask = homeworkData[taskIndex];
-                const newTask = prompt("🔧 แก้ไขงาน:", currentTask.task);
-                if (newTask === null) return;
-                const newNote = prompt("🔧 ปรับหมายเหตุ:", currentTask.note);
-                const newDate = prompt("🔧 แก้ไขวันเส้นตาย (ปปปป-ดด-วว):", currentTask.date);
-                
-                if (newTask.trim() !== "") homeworkData[taskIndex].task = newTask.trim();
-                if (newNote !== null) homeworkData[taskIndex].note = newNote.trim();
-                if (newDate !== null) homeworkData[taskIndex].date = newDate.trim();
-                
-                renderSections();
-                await saveCloudData();
-            }
+        window.deleteTask = async function(id) {
+            homeworkData = homeworkData.filter(i => i.id !== id);
+            renderSections(); await window.saveCloudData();
         }
 
-        async function deleteTask(id) {
-            if (confirm("ลบงานนี้ทิ้งเลยใช่ป่ะ?")) {
-                homeworkData = homeworkData.filter(item => item.id !== id);
-                renderSections();
-                await saveCloudData();
-            }
-        }
-
-        async function completeTask(id) {
-            const taskIndex = homeworkData.findIndex(item => item.id === id);
-            if (taskIndex > -1) {
-                homeworkData[taskIndex].done = true;
-                renderSections();
-                await saveCloudData();
-            }
-        }
-
-        async function deletePermanent(id) {
-            if(confirm("ลบประวัติงานนี้ถาวรใช่ไหม?")) {
-                homeworkData = homeworkData.filter(item => item.id !== id);
-                renderSections();
-                await saveCloudData();
-            }
+        window.completeTask = async function(id) {
+            const idx = homeworkData.findIndex(i => i.id === id);
+            if (idx > -1) homeworkData[idx].done = true;
+            renderSections(); await window.saveCloudData();
         }
 
         function renderSections() {
             const container = document.getElementById("subjects-container");
-            const historyContainer = document.getElementById("history-list");
-            const historyEmpty = document.getElementById("history-empty");
+            const histList = document.getElementById("history-list");
+            container.innerHTML = ""; histList.innerHTML = "";
             
-            container.innerHTML = "";
-            historyContainer.innerHTML = "";
+            const pending = homeworkData.filter(i => !i.done);
+            const done = homeworkData.filter(i => i.done);
+            
+            document.getElementById("total-pending-badge").innerText = `${pending.length} TASKS`;
+            document.getElementById("history-count").innerText = `✅ รอดตายแล้ว (${done.length} RESOLVED)`;
+            
+            if(done.length > 0) document.getElementById("history-empty").classList.add("hidden");
+            else document.getElementById("history-empty").classList.remove("hidden");
 
-            const pendingTasksGlobal = homeworkData.filter(item => !item.done);
-            const completedTasks = homeworkData.filter(item => item.done);
-
-            document.getElementById("total-pending-badge").innerText = `${pendingTasksGlobal.length} TASKS`;
-            document.getElementById("history-count").innerText = `${completedTasks.length} RESOLVED`;
-
-            if (subjectsList.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-stone-400 text-sm bg-stone-50 rounded-xl border border-dashed border-stone-300">⚠️ คลังวิชายังว่างเปล่า! ตั้งชื่อวิชาที่ช่องเลข 1 ได้เลยครับพี่ช่าง</div>`;
-            } else {
-                subjectsList.forEach(subjectName => {
-                    const pendingInSubject = pendingTasksGlobal.filter(t => t.subject === subjectName);
-                    
-                    const subjectBox = document.createElement("div");
-                    subjectBox.className = "bg-stone-50 border border-stone-200 rounded-xl p-4 shadow-sm space-y-3";
-                    
-                    const headerDiv = document.createElement("div");
-                    headerDiv.className = "flex justify-between items-center border-b pb-2 border-stone-200";
-                    
-                    headerDiv.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <h3 class="text-sm font-extrabold text-stone-700">📘 วิชา: ${subjectName}</h3>
-                            <span class="bg-orange-50 border border-orange-200 text-orange-600 text-[11px] px-2 py-0.2 rounded-full font-mono font-bold">${pendingInSubject.length} งาน</span>
-                        </div>
-                        <button onclick="deleteSubject('${subjectName}')" class="text-stone-400 hover:text-rose-600 text-xs transition font-semibold">💥 ทุบหมวด</button>
-                    `;
-                    subjectBox.appendChild(headerDiv);
-
-                    const ul = document.createElement("ul");
-                    ul.className = "space-y-2";
-
-                    if (pendingInSubject.length === 0) {
-                        ul.innerHTML = `<li class="text-xs text-emerald-600 italic py-2 text-center">🎉 หมวดนี้เคลียร์ครบหมดแล้วเจ้าข้าเอ๊ยย</li>`;
-                    } else {
-                        pendingInSubject.forEach(item => {
-                            const li = document.createElement("li");
-                            li.className = "flex items-start justify-between bg-white border border-stone-200 p-3 rounded-lg hover:border-orange-300 transition";
-                            li.innerHTML = `
-                                <div class="min-w-0 flex-1 pr-3">
-                                    <p class="text-sm font-semibold text-stone-800 break-words">${item.task}</p>
-                                    <p class="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded mt-1.5 font-light">🛠️ หมายเหตุ: ${item.note}</p>
-                                    <p class="text-[11px] text-rose-500 font-semibold mt-1.5">🚨 เส้นตาย: ${item.date}</p>
-                                </div>
-                                <div class="flex items-center gap-1.5 shrink-0 ml-1">
-                                    <button onclick="editTask(${item.id})" class="text-xs text-stone-600 hover:bg-stone-100 px-2 py-1 rounded border border-stone-200 font-semibold">✏️ แก้ไข</button>
-                                    <button onclick="deleteTask(${item.id})" class="text-xs text-stone-400 hover:text-rose-600 px-2 py-1 rounded border border-stone-100">ลบ</button>
-                                    <button onclick="completeTask(${item.id})" class="bg-orange-500 hover:bg-orange-600 text-white font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs transition">✓</button>
-                                </div>
-                            `;
-                            ul.appendChild(li);
-                        });
-                    }
-                    subjectBox.appendChild(ul);
-                    container.appendChild(subjectBox);
-                });
-            }
-
-            if (completedTasks.length === 0) {
-                historyEmpty.classList.remove("hidden");
-            } else {
-                historyEmpty.classList.add("hidden");
-                completedTasks.forEach(item => {
+            subjectsList.forEach(sub => {
+                const subTasks = pending.filter(t => t.subject === sub);
+                const box = document.createElement("div");
+                box.className = "bg-stone-50 border p-3 rounded-xl space-y-2";
+                box.innerHTML = `<div class="flex justify-between border-b pb-1"><span class="text-xs font-bold">📘 ${sub} (${subTasks.length})</span><button onclick="deleteSubject('${sub}')" class="text-stone-400 text-[11px] hover:text-red-500">ทุบวิชา</button></div>`;
+                
+                const ul = document.createElement("ul");
+                subTasks.forEach(item => {
                     const li = document.createElement("li");
-                    li.className = "flex items-center justify-between bg-white border border-stone-200 p-3 rounded-xl opacity-60";
-                    li.innerHTML = `
-                        <div class="min-w-0 flex-1 pr-2 line-through text-stone-400 text-xs">
-                            <span class="inline-block text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.2 rounded mb-1 border border-stone-200">[${item.subject}]</span>
-                            <p class="font-light break-words">${item.task}</p>
-                        </div>
-                        <button onclick="deletePermanent(${item.id})" class="text-stone-400 hover:text-rose-500 text-xs p-1">🗑️</button>
-                    `;
-                    historyContainer.appendChild(li);
+                    li.className = "flex justify-between bg-white border p-2 rounded-lg text-xs";
+                    li.innerHTML = `<div class="min-w-0 flex-1"><b>${item.task}</b><p class="text-stone-500 text-[10px]">${item.note}</p><p class="text-red-500 text-[10px]">📅 ${item.date}</p></div>
+                                    <div class="flex gap-1 items-center"><button onclick="deleteTask(${item.id})" class="text-stone-400 px-1">ลบ</button><button onclick="completeTask(${item.id})" class="bg-orange-500 text-white w-5 h-5 rounded-full text-[10px]">✓</button></div>`;
+                    ul.appendChild(li);
                 });
-            }
+                box.appendChild(ul); container.appendChild(box);
+            });
+
+            done.forEach(item => {
+                const li = document.createElement("li"); li.className = "text-xs text-stone-400 line-through bg-white border p-2 rounded-lg";
+                li.innerText = `[${item.subject}] ${item.task}`; histList.appendChild(li);
+            });
         }
     </script>
 </body>
