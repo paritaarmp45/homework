@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght=300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Kanit', sans-serif; }
     </style>
@@ -128,9 +128,8 @@
         let homeworkData = [];
         let subjectsList = [];
 
-        // ลิงก์ไปยังถังเก็บข้อมูลออนไลน์กลาง (เปิดให้ใช้ฟรีสำหรับระบบการบ้านชิ้นนี้)
         const BIN_URL = "https://api.jsonbin.io/v3/b/6667104ae41b4d34e4013149";
-        const API_KEY = "$2a$10$w8/0bOOfpX4vshWn/F.WvOCtF88zWv7.n8P8n/yP6m5n9E3T3R7mG"; // Access Key ปลอดภัยใช้งานได้ทันที
+        const API_KEY = "$2a$10$w8/0bOOfpX4vshWn/F.WvOCtF88zWv7.n8P8n/yP6m5n9E3T3R7mG"; 
 
         function showLoading(statusText) {
             document.getElementById("sync-status").innerText = statusText;
@@ -142,7 +141,6 @@
             document.getElementById("sync-status").className = "text-xs bg-emerald-600 text-white px-2 py-1 rounded font-mono";
         }
 
-        // ดึงข้อมูลทั้งหมดจากคลาวด์ลงมาที่เครื่อง
         async function loadCloudData() {
             showLoading("LOADING...");
             try {
@@ -161,7 +159,6 @@
             }
         }
 
-        // อัปเดตข้อมูลจากเครื่องยิงขึ้นไปเซฟบนคลาวด์
         async function saveCloudData() {
             showLoading("SAVING...");
             try {
@@ -188,7 +185,7 @@
             document.getElementById("login-btn").disabled = true;
 
             currentUser = username;
-            await loadCloudData(); // โหลดข้อมูลสดๆ จากเน็ต
+            await loadCloudData(); 
 
             document.getElementById("user-display").innerText = `วิศวกร: ${currentUser}`;
             document.getElementById("login-screen").classList.add("hidden");
@@ -201,7 +198,7 @@
         function logout() {
             currentUser = "";
             document.getElementById("username-input").value = "";
-            document.getElementById("login-btn").innerText = "เดินเครื่องเข้าระบบส่วนตัว ⚡";
+            document.getElementById("login-btn").innerText = "เชื่อมต่อระบบคลาวด์ ⚡";
             document.getElementById("login-btn").disabled = false;
             document.getElementById("login-screen").classList.remove("hidden");
             document.getElementById("main-screen").classList.add("hidden");
@@ -221,7 +218,7 @@
             
             updateSubjectDropdown();
             renderSections();
-            await saveCloudData(); // เซฟข้ามเครื่องทันที
+            await saveCloudData(); 
         }
 
         async function deleteSubject(subjectName) {
@@ -331,3 +328,80 @@
             historyContainer.innerHTML = "";
 
             const userTasks = homeworkData.filter(item => item.user === currentUser);
+            const pendingTasksGlobal = userTasks.filter(item => !item.done);
+            const completedTasks = userTasks.filter(item => item.done);
+
+            document.getElementById("total-pending-badge").innerText = `${pendingTasksGlobal.length} MY TASKS`;
+            document.getElementById("history-count").innerText = `${completedTasks.length} RESOLVED`;
+
+            if (subjectsList.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-stone-400 text-sm bg-stone-50 rounded-xl border border-dashed border-stone-300">⚠️ คลังวิชายังว่างเปล่า! รีบตั้งชื่อวิชาตรงช่องเลข 1 ข้างบนด่วนพี่บ่าว</div>`;
+            } else {
+                subjectsList.forEach(subjectName => {
+                    const pendingInSubject = pendingTasksGlobal.filter(t => t.subject === subjectName);
+                    
+                    const subjectBox = document.createElement("div");
+                    subjectBox.className = "bg-stone-50 border border-stone-200 rounded-xl p-4 shadow-sm space-y-3";
+                    
+                    const headerDiv = document.createElement("div");
+                    headerDiv.className = "flex justify-between items-center border-b pb-2 border-stone-200";
+                    
+                    headerDiv.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-extrabold text-stone-700">📘 โมดูล: ${subjectName}</h3>
+                            <span class="bg-orange-50 border border-orange-200 text-orange-600 text-[11px] px-2 py-0.2 rounded-full font-mono font-bold">${pendingInSubject.length} งาน</span>
+                        </div>
+                        <button onclick="deleteSubject('${subjectName}')" class="text-stone-400 hover:text-rose-600 text-xs transition font-semibold">💥 ทุบหมวดนี้ทิ้ง</button>
+                    `;
+                    subjectBox.appendChild(headerDiv);
+
+                    const ul = document.createElement("ul");
+                    ul.className = "space-y-2";
+
+                    if (pendingInSubject.length === 0) {
+                        ul.innerHTML = `<li class="text-xs text-emerald-600 italic py-2 text-center">🎉 สภาพ! หมวดนี้คุณเคลียร์ครบหมดแล้ว</li>`;
+                    } else {
+                        pendingInSubject.forEach(item => {
+                            const li = document.createElement("li");
+                            li.className = "flex items-start justify-between bg-white border border-stone-200 p-3 rounded-lg hover:border-orange-300 transition";
+                            li.innerHTML = `
+                                <div class="min-w-0 flex-1 pr-3">
+                                    <p class="text-sm font-semibold text-stone-800 break-words">${item.task}</p>
+                                    <p class="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded mt-1.5 font-light">🛠️ หมายเหตุ: ${item.note}</p>
+                                    <p class="text-[11px] text-rose-500 font-semibold mt-1.5">🚨 เส้นตาย: ${item.date}</p>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0 ml-1">
+                                    <button onclick="editTask(${item.id})" class="text-xs text-stone-600 hover:bg-stone-100 px-2 py-1 rounded border border-stone-200 font-semibold">✏️ โมใหม่</button>
+                                    <button onclick="deleteTask(${item.id})" class="text-xs text-stone-400 hover:text-rose-600 px-2 py-1 rounded border border-stone-100">ลบ</button>
+                                    <button onclick="completeTask(${item.id})" class="bg-orange-500 hover:bg-orange-600 text-white font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs transition">✓</button>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                    }
+                    subjectBox.appendChild(ul);
+                    container.appendChild(subjectBox);
+                });
+            }
+
+            if (completedTasks.length === 0) {
+                historyEmpty.classList.remove("hidden");
+            } else {
+                historyEmpty.classList.add("hidden");
+                completedTasks.forEach(item => {
+                    const li = document.createElement("li");
+                    li.className = "flex items-center justify-between bg-white border border-stone-200 p-3 rounded-xl opacity-60";
+                    li.innerHTML = `
+                        <div class="min-w-0 flex-1 pr-2 line-through text-stone-400 text-xs">
+                            <span class="inline-block text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.2 rounded mb-1 border border-stone-200">[${item.subject}]</span>
+                            <p class="font-light break-words">${item.task}</p>
+                        </div>
+                        <button onclick="deletePermanent(${item.id})" class="text-stone-400 hover:text-rose-500 text-xs p-1">🗑️</button>
+                    `;
+                    historyContainer.appendChild(li);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
